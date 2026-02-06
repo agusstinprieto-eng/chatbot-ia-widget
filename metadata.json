@@ -1,0 +1,8 @@
+{
+  "name": "AERO-IA-PRO",
+  "description": "Industrial Aerospace Assistant for the Baja California Aerospace Cluster. Optimizing production and MRO with AI-driven compliance and technical intelligence.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

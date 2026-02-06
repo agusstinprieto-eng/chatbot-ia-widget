@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA.AGUS | AERO-IA-PRO - Elite Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;500;700&display=swap');
+
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-purple: #bc13fe;
+            --deep-space: #050510;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--deep-space);
+            font-family: 'Rajdhani', sans-serif;
+            color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .cyber-font {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .glass-panel {
+            background: rgba(10, 10, 25, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.05);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.3));
+        }
+
+        .hero-glow {
+            background: radial-gradient(circle at 50% 50%, rgba(0, 243, 255, 0.1) 0%, transparent 70%);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .industrial-grid {
+            background-image:
+                linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        .hero-video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .hero-video-container iframe {
+            width: 100vw;
+            height: 56.25vw;
+            min-height: 100vh;
+            min-width: 177.77vh;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        .tech-border {
+            position: relative;
+        }
+
+        .tech-border::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            border-top: 2px solid var(--neon-blue);
+            border-left: 2px solid var(--neon-blue);
+        }
+
+        .tech-border::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 20px;
+            height: 20px;
+            border-bottom: 2px solid var(--neon-blue);
+            border-right: 2px solid var(--neon-blue);
+        }
+
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 243, 255, 0.1);
+            position: absolute;
+            z-index: 10;
+            top: 0;
+            left: 0;
+            animation: scan 4s linear infinite;
+        }
+
+        @keyframes scan {
+            0% {
+                top: 0;
+            }
+
+            100% {
+                top: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body class="selection:bg-cyan-500 selection:text-black industrial-grid">
+    <div class="scanline"></div>
+
+    <!-- Nav -->
+    <nav class="fixed w-full z-50 glass-panel border-b border-cyan-900/50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <i class="fas fa-plane-departure text-2xl text-[var(--neon-blue)]"></i>
+                <span class="cyber-font text-xl tracking-widest font-bold">AERO-IA <span
+                        class="text-[var(--neon-purple)]">PRO</span></span>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="marketing-en.html"
+                    class="text-xs font-bold uppercase tracking-widest text-cyan-400 hover:text-white transition-colors">EN</a>
+                <a href="https://www.ia-agus.com/projectsweb"
+                    class="px-6 py-2 border border-cyan-500 text-cyan-400 hover:bg-cyan-500 hover:text-black font-bold uppercase transition-all tracking-wider text-xs">
+                    VOLVER AL HUB
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section
+        class="relative h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden hero-glow">
+        <div class="hero-video-container">
+            <iframe
+                src="https://www.youtube.com/embed/UpUPBpWR79k?autoplay=1&mute=1&loop=1&playlist=UpUPBpWR79k&controls=0&showinfo=0&autohide=1"
+                frameborder="0"></iframe>
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#050510]/50 to-[#050510]"></div>
+        </div>
+
+        <div class="relative z-10 max-w-5xl space-y-8 reveal active">
+            <div
+                class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-cyan-900/30 border border-cyan-500/50 text-cyan-300 text-xs font-bold uppercase tracking-[0.3em] animate-pulse">
+                <i class="fas fa-satellite"></i> Cluster Aeroespacial Baja California
+            </div>
+            <h1 class="cyber-font text-5xl md:text-8xl font-black tracking-tighter leading-tight">
+                LA EVOLUCIÓN DE LA <br />
+                <span class="gradient-text italic">INTELIGENCIA AEROESPACIAL</span>
+            </h1>
+            <p
+                class="text-xl md:text-2xl font-light text-slate-300 max-w-3xl mx-auto leading-relaxed tracking-wide border-l-4 border-[var(--neon-purple)] pl-6 text-left">
+                Transformando datos operativos en ventajas competitivas críticas y cumplimiento <span
+                    class="text-white font-bold tracking-widest">AS9100</span>. La sincronía perfecta entre hardware y
+                AI.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-6 justify-center mt-12">
+                <a href="#"
+                    class="px-10 py-4 bg-[var(--neon-blue)] text-black font-bold uppercase tracking-widest hover:scale-105 transition-all shadow-[0_0_20px_rgba(0,243,255,0.4)] hover:shadow-[0_0_40px_rgba(0,243,255,0.6)]">
+                    Agendar Demo Operativa
+                </a>
+                <a href="/dossier-aeroespacial.pdf" target="_blank"
+                    class="px-10 py-4 glass-panel text-white font-bold uppercase tracking-widest hover:bg-white/10 transition-all border border-white/20">
+                    Descargar Ficha Técnica
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Podcast Section -->
+    <section class="py-32 px-6 bg-black/20">
+        <div class="max-w-4xl mx-auto reveal">
+            <div class="glass-panel p-8 md:p-12 rounded-[40px] relative overflow-hidden group tech-border">
+                <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl group-hover:scale-110 transition-transform">
+                    <i class="fas fa-microphone-lines"></i>
+                </div>
+                <div class="flex flex-col md:flex-row items-center gap-10">
+                    <div
+                        class="w-24 h-24 bg-[var(--neon-blue)]/20 rounded-3xl flex items-center justify-center text-[var(--neon-blue)] text-4xl animate-pulse">
+                        <i class="fas fa-podcast"></i>
+                    </div>
+                    <div class="flex-grow text-center md:text-left">
+                        <h3 class="cyber-font text-2xl font-bold mb-3">Análisis Estratégico (IA Podcast)</h3>
+                        <p class="text-slate-400 mb-8 leading-relaxed">
+                            Escuche un resumen ejecutivo sobre la automatización y control de tiempos en la línea de
+                            montaje aeroespacial.
+                        </p>
+                        <div class="flex items-center gap-4 bg-black/40 p-4 rounded-2xl border border-white/5">
+                            <audio controls class="w-full">
+                                <source src="/audio/podcast-aeroespacial.m4a" type="audio/m4a">
+                                Tu navegador no soporta el audio.
+                            </audio>
+                        </div>
+                        <p class="text-[10px] text-white/30 mt-4 italic text-right uppercase tracking-[0.2em]">Powered
+                            by NotebookLM Technology</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Capabilities Section -->
+    <section class="py-32 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/5 blur-[120px]"></div>
+        <div class="max-w-7xl mx-auto px-6 reveal">
+            <h2 class="cyber-font text-4xl font-bold text-center mb-20">CAPACIDADES <span
+                    class="gradient-text">ELITE</span></h2>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Case 1 -->
+                <div
+                    class="glass-panel p-10 rounded-[32px] hover:border-[var(--neon-blue)] transition-all group relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1541123439556-99178cc0181b?q=80&w=600" alt="Assembly"
+                        class="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-20 transition-opacity">
+                    <div class="relative z-10">
+                        <div
+                            class="w-16 h-16 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-400 text-3xl mb-8">
+                            <i class="fas fa-shield-halved"></i>
+                        </div>
+                        <h3 class="cyber-font text-xl font-bold mb-4">Agentes de Calidad</h3>
+                        <p class="text-slate-400 leading-relaxed">
+                            Detección de defectos bajo norma <span class="text-white">AS9100</span> mediante visión
+                            computacional, optimizando la precisión en cada remache.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Case 2 -->
+                <div
+                    class="glass-panel p-10 rounded-[32px] hover:border-[var(--neon-purple)] transition-all group relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1569154941061-e231b4725ef1?q=80&w=600" alt="Engine"
+                        class="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-20 transition-opacity">
+                    <div class="relative z-10">
+                        <div
+                            class="w-16 h-16 bg-purple-500/10 rounded-2xl flex items-center justify-center text-purple-400 text-3xl mb-8">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="cyber-font text-xl font-bold mb-4">MRO Assistant</h3>
+                        <p class="text-slate-400 leading-relaxed">
+                            Mantenimiento predictivo y asistencia técnica inteligente basada en manuales de ingeniería
+                            específicos de aeronaves.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Case 3 -->
+                <div
+                    class="glass-panel p-10 rounded-[32px] hover:border-[var(--neon-blue)] transition-all group relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600" alt="Supply"
+                        class="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-20 transition-opacity">
+                    <div class="relative z-10">
+                        <div
+                            class="w-16 h-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-400 text-3xl mb-8">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="cyber-font text-xl font-bold mb-4">Logística Sincrónica</h3>
+                        <p class="text-slate-400 leading-relaxed">
+                            Anticipación de retrasos en materiales críticos y gestión de inventario inteligente para
+                            evitar el <span class="text-white">AOG</span>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-32 px-6 border-t border-white/5 bg-black/40 reveal">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-20 items-center mb-20 text-left">
+                <div>
+                    <h4 class="cyber-font text-3xl font-bold mb-6">Agustín Prieto</h4>
+                    <p class="text-slate-400 text-lg leading-relaxed">
+                        Desarrollador Full Stack & Consultor de IA. Colaborando con el Cluster Aeroespacial de Baja
+                        California para liderar el futuro de la Industria 5.0.
+                    </p>
+                </div>
+                <div class="flex flex-col items-center md:items-end gap-10">
+                    <div class="flex gap-6 text-3xl">
+                        <a href="#" class="text-slate-500 hover:text-[var(--neon-blue)] transition-colors"><i
+                                class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-slate-500 hover:text-white transition-colors"><i
+                                class="fab fa-github"></i></a>
+                    </div>
+                    <p
+                        class="cyber-font text-2xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-[var(--neon-blue)] to-[var(--neon-purple)]">
+                        IA-AGUS.COM / Hub
+                    </p>
+                </div>
+            </div>
+            <div class="text-xs text-white/20 uppercase tracking-[0.5em] text-center">
+                &copy; 2026 IA.AGUS - Aeroespacial Baja California. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Reveal animation
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal();
+    </script>
+</body>
+
+</html>
