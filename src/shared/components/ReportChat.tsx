@@ -22,6 +22,35 @@ const ReportChat: React.FC<ReportChatProps> = ({ analysisContext, language }) =>
     const [isMaximized, setIsMaximized] = useState(false);
     const [isLiveCallOpen, setIsLiveCallOpen] = useState(false);
     const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+    const [isGroundingEnabled, setIsGroundingEnabled] = useState(false);
+    const [searchCount, setSearchCount] = useState(0);
+
+    const STORAGE_KEY = 'aero_search_limit';
+
+    // Daily Limit Logic
+    useEffect(() => {
+        const storedData = localStorage.getItem(STORAGE_KEY);
+        const today = new Date().toISOString().split('T')[0];
+
+        if (storedData) {
+            const { date, count } = JSON.parse(storedData);
+            if (date === today) {
+                setSearchCount(count);
+            } else {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({ date: today, count: 0 }));
+                setSearchCount(0);
+            }
+        } else {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({ date: today, count: 0 }));
+        }
+    }, []);
+
+    const incrementSearchCount = () => {
+        const today = new Date().toISOString().split('T')[0];
+        const newCount = searchCount + 1;
+        setSearchCount(newCount);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ date: today, count: newCount }));
+    };
 
     const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -38,7 +67,19 @@ const ReportChat: React.FC<ReportChatProps> = ({ analysisContext, language }) =>
         setIsLoading(true);
 
         try {
-            const response = await chatWithReport(analysisContext, input, messages, language);
+            const response = await chatWithReport(
+                analysisContext,
+                input,
+                messages,
+                language,
+                'aerospace',
+                isGroundingEnabled
+            );
+
+            if (isGroundingEnabled) {
+                incrementSearchCount();
+            }
+
             setMessages(prev => [...prev, { role: 'model', content: response }]);
         } catch (error) {
             setMessages(prev => [...prev, { role: 'model', content: 'SYSTEM_ERROR: Parallel processing failure.' }]);
@@ -383,6 +424,20 @@ const ReportChat: React.FC<ReportChatProps> = ({ analysisContext, language }) =>
                         <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-cyber-dark animate-ping" />
                     </button>
 
+                    {/* Grounding Toggle */}
+                    <button
+                        onClick={() => searchCount < 50 && setIsGroundingEnabled(!isGroundingEnabled)}
+                        disabled={searchCount >= 50}
+                        className={`p-3 rounded-xl flex flex-col items-center justify-center transition-all border ${isGroundingEnabled
+                            ? 'bg-amber-500 border-amber-400 text-black shadow-[0_0_15px_rgba(245,158,11,0.4)]'
+                            : 'bg-cyber-dark/80 border-white/10 text-white/40 hover:border-amber-500/50 hover:text-amber-500'
+                            } disabled:opacity-20 disabled:grayscale`}
+                        title={language === 'es' ? `Búsqueda en Internet (${50 - searchCount} restantes)` : `Web Search (${50 - searchCount} left)`}
+                    >
+                        <Search size={18} className={`${isGroundingEnabled ? 'animate-pulse' : ''}`} />
+                        <span className="text-[7px] font-black uppercase mt-0.5 leading-none">{searchCount}/50</span>
+                    </button>
+
                     <div className="flex-1 relative group">
                         <input
                             type="text"
@@ -408,10 +463,10 @@ const ReportChat: React.FC<ReportChatProps> = ({ analysisContext, language }) =>
                             <FileText size={10} />
                             SAVE_LOGS
                         </button>
-                        <button className="text-[10px] font-mono text-cyber-blue/30 hover:text-cyber-blue transition-colors flex items-center gap-1">
+                        <div className={`text-[10px] font-mono flex items-center gap-1 ${isGroundingEnabled ? 'text-amber-500 shadow-neon-amber' : 'text-cyber-blue/30'}`}>
                             <Search size={10} />
-                            WEB_LINK
-                        </button>
+                            {isGroundingEnabled ? 'WEB_LINK_ACTIVE' : 'WEB_LINK_IDLE'}
+                        </div>
                     </div>
                     <span className="text-[8px] font-mono text-cyber-blue/20 uppercase tracking-widest">v0.8.6 // IA.AGUS</span>
                 </div>
