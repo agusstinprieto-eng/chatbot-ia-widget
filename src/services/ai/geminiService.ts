@@ -4,6 +4,10 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY || "";
 const genAI = new GoogleGenerativeAI(apiKey);
 
+const cleanJSON = (text: string) => {
+  return text.replace(/```json/g, '').replace(/```/g, '').trim();
+};
+
 export const mroExpertQuery = async (query: string) => {
   const model = genAI.getGenerativeModel({
     model: "gemini-1.5-flash",
@@ -25,9 +29,17 @@ export const mroExpertQuery = async (query: string) => {
       }`,
   });
 
-  const result = await model.generateContent(query);
-  const response = await result.response;
-  return JSON.parse(response.text());
+  if (!apiKey) throw new Error("API Key configuration missing (VITE_GEMINI_API_KEY)");
+
+  try {
+    const result = await model.generateContent(query);
+    const response = await result.response;
+    const text = response.text();
+    return JSON.parse(cleanJSON(text));
+  } catch (error) {
+    console.error("MRO AI Error:", error);
+    throw new Error("Failed to analyze maintenance request. Please try again.");
+  }
 };
 
 export const falconEyeInspection = async (description: string, imageBase64?: string) => {
@@ -61,7 +73,15 @@ export const falconEyeInspection = async (description: string, imageBase64?: str
     } as any);
   }
 
-  const result = await model.generateContent({ contents: [{ role: "user", parts }] });
-  const response = await result.response;
-  return JSON.parse(response.text());
+  if (!apiKey) throw new Error("API Key configuration missing (VITE_GEMINI_API_KEY)");
+
+  try {
+    const result = await model.generateContent({ contents: [{ role: "user", parts }] });
+    const response = await result.response;
+    const text = response.text();
+    return JSON.parse(cleanJSON(text));
+  } catch (error) {
+    console.error("FalconEye AI Error:", error);
+    throw new Error("Failed to process inspection. Please check image format/size or API quota.");
+  }
 };

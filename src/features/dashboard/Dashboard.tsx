@@ -12,20 +12,20 @@ const Dashboard: React.FC<DashboardProps> = ({ onSelectModule }) => {
   return (
     <div className="max-w-6xl mx-auto py-12">
       <div className="text-center mb-16 animate-in fade-in slide-in-from-bottom duration-700">
-        <h2 className="text-4xl font-extrabold text-white mb-4 tracking-tight">
+        <h2 className="text-4xl font-extrabold text-white mb-4 tracking-tight font-tech uppercase drop-shadow-[0_0_10px_rgba(0,240,255,0.5)]">
           Welcome, Aerospace Cluster Baja California
         </h2>
-        <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-          Operational Intelligence System by <span className="text-teal-500 font-bold">IA.AGUS</span>.
+        <p className="text-cyber-blue/60 text-lg max-w-2xl mx-auto font-mono">
+          Operational Intelligence System by <span className="text-cyber-blue font-bold glow-text-blue">IA.AGUS</span>.
           Optimizing High-Mix/Low-Volume production lines and MRO workflows.
         </p>
         <div className="mt-8 flex justify-center gap-4">
-          <div className="px-4 py-2 bg-slate-800 rounded-full border border-slate-700 text-xs text-slate-300 flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></div>
+          <div className="px-4 py-2 bg-cyber-black rounded-full border border-cyber-blue/30 text-xs text-cyber-blue/50 flex items-center gap-2 font-mono">
+            <div className="w-2 h-2 rounded-full bg-cyber-blue animate-pulse shadow-neon-blue"></div>
             Engine 1 System Status: ONLINE
           </div>
-          <div className="px-4 py-2 bg-slate-800 rounded-full border border-slate-700 text-xs text-slate-300 flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></div>
+          <div className="px-4 py-2 bg-cyber-black rounded-full border border-cyber-blue/30 text-xs text-cyber-blue/50 flex items-center gap-2 font-mono">
+            <div className="w-2 h-2 rounded-full bg-cyber-blue animate-pulse shadow-neon-blue"></div>
             AS9100 Rev D Sync: OK
           </div>
         </div>
@@ -36,23 +36,26 @@ const Dashboard: React.FC<DashboardProps> = ({ onSelectModule }) => {
           <button
             key={module.id}
             onClick={() => onSelectModule(module.id as ModuleType)}
-            className="group relative bg-slate-800/40 border border-slate-700 rounded-2xl p-8 text-left transition-all duration-300 hover:bg-slate-800 hover:border-teal-500/50 hover:shadow-[0_0_30px_rgba(20,184,166,0.1)] hover:-translate-y-1"
+            className="group relative glass-panel rounded-2xl p-8 text-left transition-all duration-300 hover:bg-cyber-dark/80 hover:border-cyber-blue/50 hover:shadow-neon-blue hover:-translate-y-1 overflow-hidden"
           >
-            <div className="mb-6 p-3 bg-slate-900 rounded-xl w-fit group-hover:scale-110 transition-transform">
-              {module.icon}
+            {/* Dark frame background effect */}
+            <div className="absolute inset-0 bg-cyber-blue/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+            <div className="mb-6 p-3 bg-cyber-dark rounded-xl w-fit group-hover:scale-110 transition-transform border border-cyber-blue/20">
+              {React.cloneElement(module.icon as React.ReactElement, { className: "text-cyber-blue" })}
             </div>
-            <h3 className="text-2xl font-bold text-white mb-2">{module.title}</h3>
-            <p className="text-teal-500 text-xs font-bold uppercase tracking-widest mb-4">{module.subtitle}</p>
-            <p className="text-slate-400 text-sm leading-relaxed mb-8">
+            <h3 className="text-2xl font-bold text-white mb-2 font-tech relative z-10">{module.title}</h3>
+            <p className="text-cyber-blue text-xs font-bold uppercase tracking-widest mb-4 font-mono relative z-10">{module.subtitle}</p>
+            <p className="text-cyber-text/70 text-sm leading-relaxed mb-8 relative z-10">
               {module.description}
             </p>
 
-            <div className="flex items-center gap-2 text-teal-400 text-sm font-bold group-hover:gap-3 transition-all">
-              Initialize Module <ChevronRight size={18} />
+            <div className="flex items-center gap-2 text-cyber-blue text-sm font-bold group-hover:gap-3 transition-all font-tech tracking-wider relative z-10">
+              INITIALIZE MODULE <ChevronRight size={18} />
             </div>
 
             {/* Futuristic decoration */}
-            <div className="absolute top-4 right-4 text-slate-700 opacity-20 group-hover:opacity-100 transition-opacity">
+            <div className="absolute top-4 right-4 text-cyber-blue/30 opacity-20 group-hover:opacity-100 transition-opacity">
               <ExternalLink size={16} />
             </div>
           </button>
@@ -60,9 +63,9 @@ const Dashboard: React.FC<DashboardProps> = ({ onSelectModule }) => {
       </div>
 
       <div className="mt-20 grid md:grid-cols-2 gap-12">
-        <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-8">
-          <h4 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
-            <div className="w-2 h-8 bg-teal-500"></div>
+        <div className="glass-panel rounded-2xl p-8">
+          <h4 className="text-lg font-bold text-white mb-6 flex items-center gap-2 font-tech uppercase tracking-wider">
+            <div className="w-1 h-6 bg-cyber-blue shadow-neon-blue"></div>
             Active Operations Protocol
           </h4>
           <div className="space-y-4">
@@ -71,23 +74,23 @@ const Dashboard: React.FC<DashboardProps> = ({ onSelectModule }) => {
               { label: 'Plant Efficiency', value: '94.2%', status: 'optimal' },
               { label: 'Safety Incidents', value: '0 - 365+ Days', status: 'optimal' },
             ].map((item, i) => (
-              <div key={i} className="flex items-center justify-between p-3 border-b border-slate-800 last:border-0">
-                <span className="text-slate-500 text-sm">{item.label}</span>
-                <span className="text-teal-500 font-mono text-sm font-bold uppercase">{item.value}</span>
+              <div key={i} className="flex items-center justify-between p-3 border-b border-cyber-blue/20 last:border-0 hover:bg-cyber-blue/10 transition-colors rounded">
+                <span className="text-cyber-blue/50 text-sm font-mono">{item.label}</span>
+                <span className="text-cyber-blue font-mono text-sm font-bold uppercase glow-text-blue">{item.value}</span>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-8 flex flex-col justify-center">
-          <blockquote className="text-slate-300 italic text-lg leading-relaxed mb-6">
+        <div className="glass-panel rounded-2xl p-8 flex flex-col justify-center">
+          <blockquote className="text-cyber-text/80 italic text-lg leading-relaxed mb-6 border-l-2 border-cyber-blue/50 pl-4">
             "To reduce waste in station 4, we must first master the art of visibility. AERO-IA-PRO is designed to be your second set of eyes, ensuring safety and precision in every rivet."
           </blockquote>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-teal-500 rounded-full flex items-center justify-center text-slate-900 font-bold">AP</div>
+            <div className="w-10 h-10 bg-cyber-blue rounded-full flex items-center justify-center text-black font-bold shadow-neon-blue">AP</div>
             <div>
-              <p className="text-sm font-bold text-white">Agustín Prieto</p>
-              <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Lead Industrial Architect</p>
+              <p className="text-sm font-bold text-white font-tech tracking-wide">Agustín Prieto</p>
+              <p className="text-[10px] text-cyber-blue uppercase tracking-widest font-bold">Lead Industrial Architect</p>
             </div>
           </div>
         </div>
