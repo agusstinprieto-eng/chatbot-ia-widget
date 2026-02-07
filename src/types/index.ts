@@ -4,6 +4,9 @@ export enum ModuleType {
     FALCON_EYE = 'FALCON_EYE',
     MRO_EXPERT = 'MRO_EXPERT',
     LEAN_ORBIT = 'LEAN_ORBIT',
+    GLOBAL_INTEL = 'GLOBAL_INTEL',
+    COSTING = 'COSTING',
+    AI_ANALYST = 'AI_ANALYST',
     SETTINGS = 'SETTINGS',
 }
 
@@ -37,4 +40,15 @@ export interface LeanMetric {
     threshold: number;
 }
 
-export type TabType = 'dashboard' | 'falcon' | 'mro' | 'lean';
+export type TabType = 'dashboard' | 'falcon' | 'mro' | 'lean' | 'intel' | 'costing';
+
+export type IndustrialMode = 'aerospace' | 'defense' | 'space' | 'uav' | 'propulsion' | 'avionics';
+
+export interface CostInputs {
+    sam: number;
+    hourlyWage: number;
+    efficiency: number;
+    overhead: number;
+    targetProduction: number;
+    workingHours: number;
+}

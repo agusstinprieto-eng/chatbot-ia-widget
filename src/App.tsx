@@ -1,23 +1,27 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from './shared/components/Layout';
 import Dashboard from './features/dashboard/Dashboard';
 import FalconEye from './features/falcon-eye/FalconEye';
 import MROExpert from './features/mro-expert/MROExpert';
 import LeanOrbit from './features/lean-orbit/LeanOrbit';
+import GlobalIntelligenceView from './features/intelligence/GlobalIntelligenceView';
+import CostingView from './features/costing/CostingView';
+import ReportChat from './shared/components/ReportChat';
 import SettingsView from './features/settings/SettingsView';
 import { ModuleType } from './types';
 
+import { useAuth } from './contexts/AuthContext';
+import { CostsProvider } from './contexts/CostsContext';
+import LoginView from './features/auth/LoginView';
+
 const App: React.FC = () => {
+  const { isAuthenticated } = useAuth();
   const [activeModule, setActiveModule] = useState<ModuleType>(ModuleType.DASHBOARD);
   const [criticalAlert, setCriticalAlert] = useState(false);
 
-  // Demonstrate MRO Expert first if requested by user startup instruction
-  // (In a real app, this might be triggered by a specific URL hash or initial state)
-  useEffect(() => {
-    // Optionally set MRO as default demo if needed:
-    // setActiveModule(ModuleType.MRO_EXPERT);
-  }, []);
+  if (!isAuthenticated) {
+    return <LoginView />;
+  }
 
   const renderModule = () => {
     switch (activeModule) {
@@ -29,6 +33,16 @@ const App: React.FC = () => {
         return <MROExpert />;
       case ModuleType.LEAN_ORBIT:
         return <LeanOrbit />;
+      case ModuleType.GLOBAL_INTEL:
+        return <GlobalIntelligenceView />;
+      case ModuleType.COSTING:
+        return <CostingView />;
+      case ModuleType.AI_ANALYST:
+        return (
+          <div className="h-[calc(100vh-200px)] max-w-5xl mx-auto py-4">
+            <ReportChat analysisContext="Aero IA Pro Main Environment // AS9100 Standard Active" language="es" />
+          </div>
+        );
       case ModuleType.SETTINGS:
         return <SettingsView />;
       default:
@@ -37,13 +51,15 @@ const App: React.FC = () => {
   };
 
   return (
-    <Layout
-      activeModule={activeModule}
-      onNavigate={setActiveModule}
-      isCriticalAlert={criticalAlert}
-    >
-      {renderModule()}
-    </Layout>
+    <CostsProvider>
+      <Layout
+        activeModule={activeModule}
+        onNavigate={setActiveModule}
+        isCriticalAlert={criticalAlert}
+      >
+        {renderModule()}
+      </Layout>
+    </CostsProvider>
   );
 };
 

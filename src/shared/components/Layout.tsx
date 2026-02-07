@@ -1,7 +1,18 @@
-
 import React from 'react';
-import { LayoutDashboard, ShieldCheck, BrainCircuit, Activity, Settings, User, Bell } from 'lucide-react';
+import {
+  LayoutDashboard,
+  ShieldCheck,
+  BrainCircuit,
+  Activity,
+  Settings,
+  Bell,
+  User,
+  Globe,
+  Calculator,
+  Sparkles
+} from 'lucide-react';
 import { ModuleType } from '../../types';
+import ReportChat from './ReportChat';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -16,6 +27,9 @@ const Layout: React.FC<LayoutProps> = ({ children, activeModule, onNavigate, isC
     { id: ModuleType.FALCON_EYE, icon: <ShieldCheck />, label: 'Falcon Eye' },
     { id: ModuleType.MRO_EXPERT, icon: <BrainCircuit />, label: 'MRO Expert' },
     { id: ModuleType.LEAN_ORBIT, icon: <Activity />, label: 'Lean Orbit' },
+    { id: ModuleType.GLOBAL_INTEL, icon: <Globe />, label: 'Global Intel' },
+    { id: ModuleType.COSTING, icon: <Calculator />, label: 'Costing' },
+    { id: ModuleType.AI_ANALYST, icon: <Sparkles />, label: 'Aero Analyst' },
     { id: ModuleType.SETTINGS, icon: <Settings />, label: 'Configuración' },
   ];
 
@@ -87,8 +101,10 @@ const Layout: React.FC<LayoutProps> = ({ children, activeModule, onNavigate, isC
         </aside>
 
         {/* Content Area */}
-        <main className="flex-1 overflow-y-auto cockpit-grid p-6 relative">
-          {children}
+        <main className="flex-1 overflow-hidden flex flex-col">
+          <div className="flex-1 overflow-y-auto cockpit-grid p-6 relative">
+            {children}
+          </div>
         </main>
       </div>
 
