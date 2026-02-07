@@ -5,6 +5,7 @@ import Dashboard from './features/dashboard/Dashboard';
 import FalconEye from './features/falcon-eye/FalconEye';
 import MROExpert from './features/mro-expert/MROExpert';
 import LeanOrbit from './features/lean-orbit/LeanOrbit';
+import SettingsView from './features/settings/SettingsView';
 import { ModuleType } from './types';
 
 const App: React.FC = () => {
@@ -28,6 +29,8 @@ const App: React.FC = () => {
         return <MROExpert />;
       case ModuleType.LEAN_ORBIT:
         return <LeanOrbit />;
+      case ModuleType.SETTINGS:
+        return <SettingsView />;
       default:
         return <Dashboard onSelectModule={setActiveModule} />;
     }

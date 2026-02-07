@@ -4,6 +4,7 @@ export enum ModuleType {
     FALCON_EYE = 'FALCON_EYE',
     MRO_EXPERT = 'MRO_EXPERT',
     LEAN_ORBIT = 'LEAN_ORBIT',
+    SETTINGS = 'SETTINGS',
 }
 
 export interface InspectionData {

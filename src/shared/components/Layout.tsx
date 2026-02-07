@@ -16,6 +16,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activeModule, onNavigate, isC
     { id: ModuleType.FALCON_EYE, icon: <ShieldCheck />, label: 'Falcon Eye' },
     { id: ModuleType.MRO_EXPERT, icon: <BrainCircuit />, label: 'MRO Expert' },
     { id: ModuleType.LEAN_ORBIT, icon: <Activity />, label: 'Lean Orbit' },
+    { id: ModuleType.SETTINGS, icon: <Settings />, label: 'Configuración' },
   ];
 
   return (
@@ -39,7 +40,10 @@ const Layout: React.FC<LayoutProps> = ({ children, activeModule, onNavigate, isC
             <span className="text-cyber-blue font-mono text-xs uppercase tracking-widest glow-text-blue">Nominal // Compliance 100%</span>
           </div>
           <Bell className="w-5 h-5 text-gray-400 cursor-pointer hover:text-cyber-blue transition-colors" />
-          <Settings className="w-5 h-5 text-gray-400 cursor-pointer hover:text-cyber-blue transition-colors" />
+          <Settings
+            className={`w-5 h-5 cursor-pointer transition-colors ${activeModule === ModuleType.SETTINGS ? 'text-cyber-blue shadow-neon-blue' : 'text-gray-400 hover:text-cyber-blue'}`}
+            onClick={() => onNavigate(ModuleType.SETTINGS)}
+          />
           <div className="flex items-center gap-2 bg-cyber-dark px-3 py-1.5 rounded-full border border-cyber-blue/30 hover:border-cyber-blue/50 transition-colors">
             <div className="w-6 h-6 bg-cyber-blue rounded-full flex items-center justify-center text-[10px] text-black font-bold shadow-neon-blue">AP</div>
             <span className="text-xs font-medium text-cyber-blue">A. Prieto</span>
@@ -56,8 +60,8 @@ const Layout: React.FC<LayoutProps> = ({ children, activeModule, onNavigate, isC
                 key={item.id}
                 onClick={() => onNavigate(item.id)}
                 className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200 font-tech tracking-wide border ${activeModule === item.id
-                    ? 'bg-cyber-blue/10 text-cyber-blue border-cyber-blue/30 shadow-[0_0_15px_rgba(0,251,255,0.1)]'
-                    : 'text-gray-400 hover:bg-cyber-dark/40 hover:text-cyber-blue hover:border-cyber-blue/20 border-transparent'
+                  ? 'bg-cyber-blue/10 text-cyber-blue border-cyber-blue/30 shadow-[0_0_15px_rgba(0,251,255,0.1)]'
+                  : 'text-gray-400 hover:bg-cyber-dark/40 hover:text-cyber-blue hover:border-cyber-blue/20 border-transparent'
                   }`}
               >
                 {React.cloneElement(item.icon as React.ReactElement, {
