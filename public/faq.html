@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preguntas Frecuentes | Aero IA Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030712;
+            color: #e5e7eb;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .cyber-gradient {
+            background: linear-gradient(135deg, #00f3ff 0%, #bc13fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .faq-item {
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            transform: translateX(4px);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+        }
+
+        .faq-answer.active {
+            max-height: 1000px;
+            transition: max-height 1s ease-in-out;
+        }
+    </style>
+</head>
+
+<body class="bg-black text-white antialiased">
+
+    <!-- Header -->
+    <header class="fixed w-full z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <i class="fas fa-plane-departure text-3xl text-cyan-400"></i>
+                <div class="font-black text-xl tracking-tighter">
+                    AERO <span class="cyber-gradient">IA PRO</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="marketing-es.html" class="text-sm text-zinc-400 hover:text-white transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i> Volver a Marketing
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-24 pb-20 container mx-auto px-6 max-w-4xl">
+
+        <!-- Hero -->
+        <div class="text-center mb-16">
+            <h1 class="text-5xl md:text-6xl font-black mb-6 uppercase tracking-tight">Preguntas <span
+                    class="cyber-gradient">Frecuentes</span></h1>
+            <p class="text-xl text-zinc-400">Respuestas claras a las dudas más comunes sobre nuestra plataforma de
+                inteligencia aeroespacial.</p>
+        </div>
+
+        <!-- FAQ Categories -->
+        <div class="space-y-12">
+
+            <!-- Pricing & Plans -->
+            <section>
+                <h2 class="text-2xl font-black text-cyan-400 mb-6 flex items-center gap-3">
+                    <i class="fas fa-dollar-sign"></i> PRECIOS Y PLANES
+                </h2>
+                <div class="space-y-4">
+
+                    <div class="faq-item bg-gray-900/40 border border-gray-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleFaq(this)"
+                            class="w-full p-6 text-left flex justify-between items-center hover:bg-gray-800/40 transition-colors">
+                            <h3 class="font-bold text-white">¿Cuánto cuesta Aero IA Pro?</h3>
+                            <i class="fas fa-chevron-down text-cyan-400 transition-transform"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 text-zinc-300">
+                            <p class="mb-4">Nuestro modelo es simple y escalable para operaciones aeroespaciales:</p>
+                            <ul class="list-disc list-inside space-y-2 ml-4">
+                                <li><strong class="text-white">$3,499 USD/mes</strong> (Aerospace Operations Package)
+                                </li>
+                                <li>Incluye <strong>1,000 análisis premium</strong> de inspección y MRO ($3.50 USD de
+                                    valor
+                                    c/u)</li>
+                                <li><strong>Sin costos ocultos:</strong> No cobramos por "usuarios extra" ni por
+                                    almacenamiento</li>
+                                <li><strong>Precio fijo:</strong> Ideal para presupuestos corporativos aeroespaciales
+                                    predecibles</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item bg-gray-900/40 border border-gray-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleFaq(this)"
+                            class="w-full p-6 text-left flex justify-between items-center hover:bg-gray-800/40 transition-colors">
+                            <h3 class="font-bold text-white">¿Qué incluye el paquete base?</h3>
+                            <i class="fas fa-chevron-down text-cyan-400 transition-transform"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 text-zinc-300">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <p class="font-bold text-white mb-2">Capacidad:</p>
+                                    <ul class="space-y-1 text-sm">
+                                        <li>✓ Hasta 20 aeronaves monitoreadas</li>
+                                        <li>✓ 1,000 inspecciones IA/mes</li>
+                                        <li>✓ Historial de 24 meses</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-white mb-2">Usuarios:</p>
+                                    <ul class="space-y-1 text-sm">
+                                        <li>✓ 10 Inspectores/Ingenieros</li>
+                                        <li>✓ Técnicos ilimitados</li>
+                                        <li>✓ Integraciones habilitadas</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item bg-gray-900/40 border border-gray-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleFaq(this)"
+                            class="w-full p-6 text-left flex justify-between items-center hover:bg-gray-800/40 transition-colors">
+                            <h3 class="font-bold text-white">¿Cómo es el proceso de pago?</h3>
+                            <i class="fas fa-chevron-down text-cyan-400 transition-transform"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 text-zinc-300">
+                            <p class="mb-4">Aceptamos múltiples opciones de pago:</p>
+                            <ul class="list-disc list-inside space-y-2 ml-4">
+                                <li><strong>Tarjeta de crédito/débito:</strong> Procesado automáticamente vía Stripe
+                                    (seguro y encriptado)</li>
+                                <li><strong>Transferencia bancaria:</strong> Disponible para clientes corporativos
+                                    aeroespaciales</li>
+                                <li><strong>Facturación mensual:</strong> Ciclo automático el día de tu suscripción</li>
+                                <li><strong>Cancelación:</strong> El contrato mínimo es de 1 año. La cancelación
+                                    anticipada conlleva penalizaciones equivalentes al 100% de los meses restantes.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Functionality -->
+            <section>
+                <h2 class="text-2xl font-black text-purple-400 mb-6 flex items-center gap-3">
+                    <i class="fas fa-cog"></i> FUNCIONALIDADES
+                </h2>
+                <div class="space-y-4">
+
+                    <div class="faq-item bg-gray-900/40 border border-gray-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleFaq(this)"
+                            class="w-full p-6 text-left flex justify-between items-center hover:bg-gray-800/40 transition-colors">
+                            <h3 class="font-bold text-white">¿Cómo funciona Falcon Eye (Inspección Visual IA)?</h3>
+                            <i class="fas fa-chevron-down text-cyan-400 transition-transform"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 text-zinc-300">
+                            <p class="mb-4">Nuestro sistema utiliza Google Gemini para analizar componentes
+                                aeroespaciales:</p>
+                            <ol class="list-decimal list-inside space-y-2 ml-4">
+                                <li>Cargas fotos o videos de inspección (procesamiento seguro conforme AS9100)</li>
+                                <li>Nuestra IA detecta defectos, corrosión, y daños estructurales</li>
+                                <li>Genera reportes de no-conformidad automáticos</li>
+                                <li>Clasifica severidad según normativa FAA/EASA</li>
+                                <li>Recomienda acciones correctivas basadas en AMM/IPC</li>
+                            </ol>
+                            <p class="mt-4 text-sm text-yellow-400">💡 Precisión del 92-96% certificada. Complementa -
+                                no reemplaza - inspecciones humanas certificadas.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item bg-gray-900/40 border border-gray-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleFaq(this)"
+                            class="w-full p-6 text-left flex justify-between items-center hover:bg-gray-800/40 transition-colors">
+                            <h3 class="font-bold text-white">¿Necesito cámaras especiales para inspección?</h3>
+                            <i class="fas fa-chevron-down text-cyan-400 transition-transform"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 text-zinc-300">
+                            <p class="mb-4"><strong>Funciona con equipo estándar:</strong></p>
+                            <ul class="list-disc list-inside space-y-2 ml-4">
+                                <li>Smartphones (iPhone Pro, Samsung Ultra) - Recomendado: 4K mínimo</li>
+                                <li>Cámaras industriales aviation-grade (Borescopes Olympus/GE)</li>
+                                <li>Drones DJI Mavic/Phantom para inspección exterior</li>
+                                <li>Tablets ruggedizados para hangar</li>
+                            </ul>
+                            <p class="mt-4 text-sm text-emerald-400">✓ La mayoría de clientes MRO comienza con teléfonos
+                                Pro y borescopes estándar.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item bg-gray-900/40 border border-gray-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleFaq(this)"
+                            class="w-full p-6 text-left flex justify-between items-center hover:bg-gray-800/40 transition-colors">
+                            <h3 class="font-bold text-white">¿Puedo cargar mis propios datos de aeronaves?</h3>
+                            <i class="fas fa-chevron-down text-cyan-400 transition-transform"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 text-zinc-300">
+                            <p class="mb-4"><strong>¡Sí, totalmente! Aero IA Pro es flexible y personalizable.</strong>
+                            </p>
+                            <p class="mb-2">No estás limitado a bases de datos genéricas:</p>
+                            <ul class="list-disc list-inside space-y-2 ml-4">
+                                <li><strong>Configuración por Flota:</strong> Define tus aeronaves (MSN, matrícula,
+                                    modelo)</li>
+                                <li><strong>Procedimientos a la Medida:</strong> Carga tus AMMs, CMMs, SRMs específicos
+                                </li>
+                                <li><strong>Límites Operacionales:</strong> Configura ciclos, horas de vuelo,
+                                    calendarios propios</li>
+                                <li><strong>Privacidad AS9100:</strong> Toda tu configuración se almacena con
+                                    encriptación AES-256</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Compliance & Certification -->
+            <section>
+                <h2 class="text-2xl font-black text-emerald-400 mb-6 flex items-center gap-3">
+                    <i class="fas fa-shield-alt"></i> CUMPLIMENTO Y CERTIFICACIONES
+                </h2>
+                <div class="space-y-4">
+
+                    <div class="faq-item bg-gray-900/40 border border-gray-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleFaq(this)"
+                            class="w-full p-6 text-left flex justify-between items-center hover:bg-gray-800/40 transition-colors">
+                            <h3 class="font-bold text-white">¿Cumplen con AS9100 Rev D y normativas aeronáuticas?</h3>
+                            <i class="fas fa-chevron-down text-cyan-400 transition-transform"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 text-zinc-300">
+                            <p class="mb-4">Estamos alineados con los principales estándares aeroespaciales:</p>
+                            <ul class="list-disc list-inside space-y-2 ml-4">
+                                <li>✓ <strong>AS9100 Rev D:</strong> Trazabilidad completa de inspecciones y
+                                    mantenimiento</li>
+                                <li>✓ <strong>FAA Part 145:</strong> Documentación compatible con MRO certificados</li>
+                                <li>✓ <strong>EASA Part-M/Part-145:</strong> Reportes conformes con regulación europea
+                                </li>
+                                <li>✓ <strong>NADCAP:</strong> Procesos de inspección auditables</li>
+                                <li>⚙️ <strong>S1000D/ATA iSpec 2200:</strong> Integración técnico-documental (en beta)
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item bg-gray-900/40 border border-gray-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleFaq(this)"
+                            class="w-full p-6 text-left flex justify-between items-center hover:bg-gray-800/40 transition-colors">
+                            <h3 class="font-bold text-white">¿Dónde se almacenan mis datos aeronáuticos?</h3>
+                            <i class="fas fa-chevron-down text-cyan-400 transition-transform"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 text-zinc-300">
+                            <p class="mb-4">Tus datos están en servidores <strong>certificados</strong> de nivel
+                                mundial:</p>
+                            <ul class="list-disc list-inside space-y-2 ml-4">
+                                <li><strong>Supabase (AWS):</strong> Infraestructura con 99.99% de uptime garantizado
+                                </li>
+                                <li><strong>Encriptación:</strong> AES-256 en reposo, TLS 1.3 en tránsito</li>
+                                <li><strong>Backups:</strong> Diarios automáticos + replicación en tiempo real</li>
+                                <li><strong>Región:</strong> Puedes elegir US, EU según tus requerimientos ITAR/EAR</li>
+                                <li><strong>ITAR Compliance:</strong> Opción de deployment on-premise para datos
+                                    controlados</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item bg-gray-900/40 border border-gray-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleFaq(this)"
+                            class="w-full p-6 text-left flex justify-between items-center hover:bg-gray-800/40 transition-colors">
+                            <h3 class="font-bold text-white">¿Son seguros los registros de mantenimiento y fotos?</h3>
+                            <i class="fas fa-chevron-down text-cyan-400 transition-transform"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 text-zinc-300">
+                            <p class="mb-4"><strong>Sí, protegemos la confidencialidad de tus operaciones:</strong></p>
+                            <ul class="list-disc list-inside space-y-2 ml-4">
+                                <li><strong>Privacidad Total:</strong> Las imágenes y reportes permanecen bajo tu
+                                    control exclusivo</li>
+                                <li><strong>Procesamiento Seguro:</strong> Frames procesados con encriptación end-to-end
+                                </li>
+                                <li><strong>Trazabilidad Auditable:</strong> Logs conformes AS9100 de cada acceso</li>
+                                <li><strong>Acceso rol-based:</strong> Solo inspectores certificados y quality managers
+                                    pueden aprobar</li>
+                                <li><strong>Eliminación certificada:</strong> Delete completo post-lifecycle según
+                                    políticas de retención</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Contract & Support -->
+            <section>
+                <h2 class="text-2xl font-black text-amber-400 mb-6 flex items-center gap-3">
+                    <i class="fas fa-file-contract"></i> CONTRATO Y SOPORTE
+                </h2>
+                <div class="space-y-4">
+
+                    <div class="faq-item bg-gray-900/40 border border-gray-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleFaq(this)"
+                            class="w-full p-6 text-left flex justify-between items-center hover:bg-gray-800/40 transition-colors">
+                            <h3 class="font-bold text-white">¿Hay permanencia mínima?</h3>
+                            <i class="fas fa-chevron-down text-cyan-400 transition-transform"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 text-zinc-300">
+                            <p class="mb-4"><strong>El contrato inicial tiene una duración obligatoria de 1
+                                    año.</strong></p>
+                            <ul class="list-disc list-inside space-y-2 ml-4">
+                                <li>Contrato anual obligatorio con renovación automática</li>
+                                <li>Penalización por cancelación anticipada (100% del balance restante)</li>
+                                <li><strong>Descuento anual:</strong> 1 mes gratis si pagas el año completo por
+                                    adelantado</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item bg-gray-900/40 border border-gray-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleFaq(this)"
+                            class="w-full p-6 text-left flex justify-between items-center hover:bg-gray-800/40 transition-colors">
+                            <h3 class="font-bold text-white">¿Qué soporte técnico incluye?</h3>
+                            <i class="fas fa-chevron-down text-cyan-400 transition-transform"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 text-zinc-300">
+                            <p class="mb-4">Soporte especializado aeroespacial incluido en tu suscripción:</p>
+                            <ul class="list-disc list-inside space-y-2 ml-4">
+                                <li><strong>SLA de respuesta:</strong> 12 horas (operaciones 24/7 en turnos críticos)
+                                </li>
+                                <li><strong>Onboarding especializado:</strong> Sesión de 2 horas con ingeniero
+                                    aeroespacial certificado</li>
+                                <li><strong>Centro de conocimiento:</strong> Videos tutoriales + documentación AS9100
+                                </li>
+                                <li><strong>Email directo:</strong> ventas@ia-agus.com</li>
+                                <li><strong>Línea de emergencia:</strong> Disponible para AOG (Aircraft on Ground)</li>
+                            </ul>
+                            <p class="mt-4 text-sm text-cyan-400">⚡ Upgrade disponible: Soporte prioritario 24/7/365 con
+                                ingeniero dedicado (+$1,200/mes)</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item bg-gray-900/40 border border-gray-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleFaq(this)"
+                            class="w-full p-6 text-left flex justify-between items-center hover:bg-gray-800/40 transition-colors">
+                            <h3 class="font-bold text-white">¿Puedo exportar mis datos si cancelo?</h3>
+                            <i class="fas fa-chevron-down text-cyan-400 transition-transform"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 text-zinc-300">
+                            <p class="mb-4"><strong>100% portabilidad garantizada:</strong></p>
+                            <ul class="list-disc list-inside space-y-2 ml-4">
+                                <li>Exportación completa en formato JSON/CSV/XML desde el dashboard</li>
+                                <li>Incluye todos los reportes de inspección, registros de mantenimiento, y
+                                    configuraciones</li>
+                                <li>Compatibilidad con formatos S1000D y ATA Spec 2000</li>
+                                <li>Tienes 60 días post-cancelación para descargar</li>
+                                <li>Sin costo adicional por la exportación</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Implementation -->
+            <section>
+                <h2 class="text-2xl font-black text-pink-400 mb-6 flex items-center gap-3">
+                    <i class="fas fa-rocket"></i> IMPLEMENTACIÓN
+                </h2>
+                <div class="space-y-4">
+
+                    <div class="faq-item bg-gray-900/40 border border-gray-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleFaq(this)"
+                            class="w-full p-6 text-left flex justify-between items-center hover:bg-gray-800/40 transition-colors">
+                            <h3 class="font-bold text-white">¿Cuánto tiempo toma la implementación?</h3>
+                            <i class="fas fa-chevron-down text-cyan-400 transition-transform"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 text-zinc-300">
+                            <p class="mb-4"><strong>Puedes estar operativo en menos de 3 días:</strong></p>
+                            <ol class="list-decimal list-inside space-y-2 ml-4">
+                                <li><strong>Día 1:</strong> Suscripción y configuración inicial de flota</li>
+                                <li><strong>Día 2:</strong> Sesión de onboarding (2h con ingeniero aeroespacial)</li>
+                                <li><strong>Día 3:</strong> Configura tus aeronaves y procedimientos en el dashboard
+                                </li>
+                                <li><strong>Día 3+:</strong> Primera inspección con Falcon Eye completada</li>
+                            </ol>
+                            <p class="mt-4 text-sm text-emerald-400">✓ La mayoría de clientes MRO está generando
+                                reportes en los primeros 3 días.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item bg-gray-900/40 border border-gray-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleFaq(this)"
+                            class="w-full p-6 text-left flex justify-between items-center hover:bg-gray-800/40 transition-colors">
+                            <h3 class="font-bold text-white">¿Se integra con mi CMMS/ERP actual?</h3>
+                            <i class="fas fa-chevron-down text-cyan-400 transition-transform"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 text-zinc-300">
+                            <p class="mb-4">Integraciones disponibles y en desarrollo:</p>
+                            <ul class="list-disc list-inside space-y-2 ml-4">
+                                <li><strong>API REST:</strong> Conexión custom con cualquier CMMS vía webhook</li>
+                                <li>✓ <strong>Quantum/TRAX/CAMP:</strong> Connector nativo disponible</li>
+                                <li>⚙️ <strong>SAP Aviation:</strong> En beta (Q2 2026)</li>
+                                <li>⚙️ <strong>Oracle Maintenance Cloud:</strong> En roadmap (Q3 2026)</li>
+                                <li><strong>Zapier/Make:</strong> Automatizaciones sin código disponibles</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+
+        <!-- CTA -->
+        <div
+            class="mt-20 bg-gradient-to-r from-cyan-900/20 to-purple-900/20 p-12 rounded-3xl border border-cyan-500/30 text-center">
+            <h2 class="text-3xl font-black text-white mb-4">¿Aún tienes dudas?</h2>
+            <p class="text-zinc-300 mb-8">Hablemos directamente. Agenda una demo personalizada sin compromiso.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="mailto:ventas@ia-agus.com"
+                    class="px-8 py-4 bg-cyan-500 text-black font-bold rounded-xl hover:bg-cyan-400 transition-all uppercase tracking-widest">
+                    <i class="fas fa-envelope mr-2"></i> Contactar Ventas
+                </a>
+                <a href="marketing-es.html"
+                    class="px-8 py-4 bg-white/5 border border-white/20 text-white font-bold rounded-xl hover:bg-white/10 transition-all uppercase tracking-widest">
+                    <i class="fas fa-arrow-left mr-2"></i> Volver al Inicio
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="border-t border-white/10 bg-black py-12 mt-20">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-zinc-500 text-sm">© 2026 Aero IA Pro. Todos los derechos reservados.</p>
+            <p class="text-zinc-700 text-xs mt-2">FAQ Version 1.0 · Actualizado Febrero 2026</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleFaq(button) {
+            const answer = button.nextElementSibling;
+            const icon = button.querySelector('i');
+
+            answer.classList.toggle('active');
+            icon.style.transform = answer.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+    </script>
+
+</body>
+
+</html>

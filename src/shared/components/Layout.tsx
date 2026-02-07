@@ -49,15 +49,21 @@ const Layout: React.FC<LayoutProps> = ({ children, activeModule, onNavigate, isC
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar Nav */}
-        <aside className="w-20 md:w-64 border-r border-cyber-blue/30 glass-panel flex flex-col">
+        <aside className="w-20 md:w-60 border-r border-cyber-blue/30 glass-panel flex flex-col transition-all duration-300">
           <nav className="p-4 space-y-2 flex-1">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => onNavigate(item.id)}
-                className="w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200 font-tech tracking-wide text-gray-400 hover:bg-cyber-dark/40 hover:text-cyber-blue hover:border-cyber-blue/20 border border-transparent"
+                className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200 font-tech tracking-wide border ${activeModule === item.id
+                    ? 'bg-cyber-blue/10 text-cyber-blue border-cyber-blue/30 shadow-[0_0_15px_rgba(0,251,255,0.1)]'
+                    : 'text-gray-400 hover:bg-cyber-dark/40 hover:text-cyber-blue hover:border-cyber-blue/20 border-transparent'
+                  }`}
               >
-                {React.cloneElement(item.icon as React.ReactElement, { size: 20 })}
+                {React.cloneElement(item.icon as React.ReactElement, {
+                  size: 20,
+                  className: activeModule === item.id ? 'drop-shadow-[0_0_8px_rgba(0,251,255,0.5)]' : ''
+                })}
                 <span className="hidden md:block text-sm font-medium">{item.label}</span>
               </button>
             ))}
