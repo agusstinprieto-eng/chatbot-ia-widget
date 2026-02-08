@@ -9,10 +9,12 @@ import {
   User,
   Globe,
   Calculator,
-  Sparkles
+  Sparkles,
+  GraduationCap
 } from 'lucide-react';
 import { ModuleType } from '../../types';
 import ReportChat from './ReportChat';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -22,6 +24,8 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, activeModule, onNavigate, isCriticalAlert }) => {
+  const { language, setLanguage, t } = useLanguage();
+
   const navItems = [
     { id: ModuleType.DASHBOARD, icon: <LayoutDashboard />, label: 'Dashboard' },
     { id: ModuleType.FALCON_EYE, icon: <ShieldCheck />, label: 'Falcon Eye' },
@@ -30,6 +34,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activeModule, onNavigate, isC
     { id: ModuleType.GLOBAL_INTEL, icon: <Globe />, label: 'Global Intel' },
     { id: ModuleType.COSTING, icon: <Calculator />, label: 'Costing' },
     { id: ModuleType.AI_ANALYST, icon: <Sparkles />, label: 'Aero Analyst' },
+    { id: ModuleType.VIRTUAL_TRAINER, icon: <GraduationCap />, label: 'Virtual Trainer' },
     { id: ModuleType.SETTINGS, icon: <Settings />, label: 'Configuración' },
   ];
 
@@ -53,6 +58,25 @@ const Layout: React.FC<LayoutProps> = ({ children, activeModule, onNavigate, isC
             <span className="text-[10px] text-cyber-blue/50 uppercase font-mono">System Status</span>
             <span className="text-cyber-blue font-mono text-xs uppercase tracking-widest glow-text-blue">Nominal // Compliance 100%</span>
           </div>
+
+          {/* Language Toggle */}
+          <div className="flex items-center gap-1 bg-cyber-dark px-2 py-1 rounded-lg border border-cyber-blue/30">
+            <button
+              onClick={() => setLanguage('es')}
+              className={`px-2 py-0.5 text-[10px] font-bold uppercase rounded transition-colors ${language === 'es' ? 'bg-cyber-blue text-black' : 'text-slate-400 hover:text-cyber-blue'
+                }`}
+            >
+              ES
+            </button>
+            <button
+              onClick={() => setLanguage('en')}
+              className={`px-2 py-0.5 text-[10px] font-bold uppercase rounded transition-colors ${language === 'en' ? 'bg-cyber-blue text-black' : 'text-slate-400 hover:text-cyber-blue'
+                }`}
+            >
+              EN
+            </button>
+          </div>
+
           <Bell className="w-5 h-5 text-gray-400 cursor-pointer hover:text-cyber-blue transition-colors" />
           <Settings
             className={`w-5 h-5 cursor-pointer transition-colors ${activeModule === ModuleType.SETTINGS ? 'text-cyber-blue shadow-neon-blue' : 'text-gray-400 hover:text-cyber-blue'}`}

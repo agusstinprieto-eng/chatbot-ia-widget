@@ -1,6 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
-import { Save, Shield, Brain, Monitor, User, CheckCircle2 } from 'lucide-react';
+import { Save, Shield, Brain, Monitor, User, CheckCircle2, Database } from 'lucide-react';
+import DocumentManager from './components/DocumentManager';
 
 const SettingsView: React.FC = () => {
     const [apiKey, setApiKey] = useState('');
@@ -138,8 +138,38 @@ const SettingsView: React.FC = () => {
                 </div>
             </div>
 
+            {/* Documentation Center - Knowledge Base Ingestion */}
+            <div className="glass-panel p-8 border border-cyber-blue/20 rounded-2xl bg-cyber-dark/40 relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                    <Database size={120} className="text-cyber-blue" />
+                </div>
+
+                <div className="flex items-center gap-3 mb-8 relative z-10">
+                    <div className="p-2 bg-cyber-blue/10 rounded-lg text-cyber-blue shadow-neon-blue/20">
+                        <Database size={24} />
+                    </div>
+                    <div>
+                        <h3 className="font-tech text-xl text-white">CENTRO DE DOCUMENTACIÓN TÉCNICA</h3>
+                        <p className="text-[10px] text-cyber-blue/50 font-mono uppercase tracking-widest mt-1">Alimentación de Cerebro IA // Knowledge Base Ingestion</p>
+                    </div>
+                </div>
+
+                <div className="relative z-10">
+                    <DocumentManager />
+                </div>
+
+                <div className="mt-8 p-4 bg-emerald-500/5 border border-emerald-500/20 rounded-xl relative z-10">
+                    <div className="flex gap-3">
+                        <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+                        <p className="text-[11px] text-emerald-500/80 leading-relaxed font-mono">
+                            <strong className="text-emerald-400">OPTIMIZACIÓN RAG:</strong> La IA priorizará estos manuales para responder consultas técnicas en MRO Expert, Falcon Eye y Virtual Trainer.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             <div className="p-8 border-t border-cyber-blue/20 flex flex-col items-center">
-                <p className="text-[10px] text-cyber-blue/30 uppercase tracking-[0.5em] font-mono">Aero IA Pro // v1.0.4-stable</p>
+                <p className="text-[10px] text-cyber-blue/30 uppercase tracking-[0.5em] font-mono">Aero IA Pro // v1.0.5-industrial</p>
             </div>
         </div>
     );

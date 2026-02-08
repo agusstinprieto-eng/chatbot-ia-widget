@@ -54,4 +54,11 @@ export const MODULES_INFO = [
     description: 'Direct interface with the Aero industrial intelligence protocols.',
     icon: <Sparkles className="w-8 h-8 text-teal-500" />,
   },
+  {
+    id: 'VIRTUAL_TRAINER',
+    title: 'Virtual Trainer',
+    subtitle: 'AI Coaching & Sim',
+    description: 'Immersive training scenarios and AS9100 compliance drills.',
+    icon: <BrainCircuit className="w-8 h-8 text-teal-500" />,
+  },
 ];

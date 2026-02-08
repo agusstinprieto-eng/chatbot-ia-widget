@@ -101,3 +101,32 @@ export const chatWithHelpDesk = async (
     throw error;
   }
 };
+
+export const startVirtualTraining = async (
+  topic: string,
+  userLevel: 'beginner' | 'intermediate' | 'expert',
+  history: any[] = [],
+  language: 'es' | 'en' = 'es'
+) => {
+  try {
+    const { data, error } = await supabase.functions.invoke('aero-ai', {
+      body: {
+        action: 'virtual-trainer',
+        payload: {
+          topic,
+          userLevel,
+          history,
+          language
+        }
+      }
+    });
+
+    if (error) throw error;
+    // Virtual Trainer returns a plain string, not JSON
+    // We can just return the result
+    return { content: data.result };
+  } catch (error) {
+    console.error("Virtual Trainer Error:", error);
+    throw new Error("Failed to start training session. Connection to AI Core disrupted.");
+  }
+};

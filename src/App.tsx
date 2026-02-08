@@ -7,15 +7,18 @@ import LeanOrbit from './features/lean-orbit/LeanOrbit';
 import GlobalIntelligenceView from './features/intelligence/GlobalIntelligenceView';
 import CostingView from './features/costing/CostingView';
 import ReportChat from './shared/components/ReportChat';
+import VirtualTrainer from './features/virtual-trainer/VirtualTrainer';
 import SettingsView from './features/settings/SettingsView';
 import { ModuleType } from './types';
 
 import { useAuth } from './contexts/AuthContext';
+import { useLanguage } from './contexts/LanguageContext';
 import { CostsProvider } from './contexts/CostsContext';
 import LoginView from './features/auth/LoginView';
 
 const App: React.FC = () => {
   const { isAuthenticated } = useAuth();
+  const { language } = useLanguage();
   const [activeModule, setActiveModule] = useState<ModuleType>(ModuleType.DASHBOARD);
   const [criticalAlert, setCriticalAlert] = useState(false);
 
@@ -40,9 +43,11 @@ const App: React.FC = () => {
       case ModuleType.AI_ANALYST:
         return (
           <div className="h-[calc(100vh-200px)] max-w-5xl mx-auto py-4">
-            <ReportChat analysisContext="Aero IA Pro Main Environment // AS9100 Standard Active" language="es" />
+            <ReportChat analysisContext="Aero IA Pro Main Environment // AS9100 Standard Active" language={language} />
           </div>
         );
+      case ModuleType.VIRTUAL_TRAINER:
+        return <VirtualTrainer />;
       case ModuleType.SETTINGS:
         return <SettingsView />;
       default:

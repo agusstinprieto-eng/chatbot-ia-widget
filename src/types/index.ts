@@ -7,6 +7,7 @@ export enum ModuleType {
     GLOBAL_INTEL = 'GLOBAL_INTEL',
     COSTING = 'COSTING',
     AI_ANALYST = 'AI_ANALYST',
+    VIRTUAL_TRAINER = 'VIRTUAL_TRAINER',
     SETTINGS = 'SETTINGS',
 }
 
