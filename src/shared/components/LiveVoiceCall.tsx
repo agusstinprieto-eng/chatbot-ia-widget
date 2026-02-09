@@ -86,9 +86,8 @@ const LiveVoiceCall: React.FC<LiveVoiceCallProps> = ({ isOpen, onClose, systemIn
         setError(null);
         setIsConnecting(true);
         try {
-            const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-            // Note: This requires the @google/genai SDK with multimodal support
-            // For now, providing the structure. If dependency is missing, WebSockets could be used directly.
+            // Note: Gemini Live requires a secure connection via Edge Functions or Backend proxy.
+            // Direct client-side keys are deprecated for security.
 
             audioContextInRef.current = new AudioContext({ sampleRate: 16000 });
             audioContextOutRef.current = new AudioContext({ sampleRate: 24000 });
