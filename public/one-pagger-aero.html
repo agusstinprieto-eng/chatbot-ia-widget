@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aero IA Pro - One Pager</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=Orbitron:wght@700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --neon-blue: #00d2ff;
+            --deep-space: #000000;
+            --starlight: #ffffff;
+            --titanium: #cbd5e1;
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--deep-space);
+            color: var(--starlight);
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            color-adjust: exact;
+        }
+
+        @media print {
+
+            body,
+            .page {
+                background: #000000 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .grid-bg {
+                display: none;
+            }
+        }
+
+        .page {
+            width: 210mm;
+            height: 297mm;
+            box-sizing: border-box;
+            background: var(--deep-space);
+            display: flex;
+            flex-direction: column;
+            padding: 20mm;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .grid-bg {
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(0, 210, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 210, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 210, 255, 0.3);
+            padding-bottom: 5mm;
+            margin-bottom: 10mm;
+            z-index: 10;
+        }
+
+        .logo h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24pt;
+            margin: 0;
+            font-weight: 900;
+        }
+
+        .logo h1 span {
+            color: var(--neon-blue);
+        }
+
+        .hero {
+            z-index: 10;
+            margin-bottom: 15mm;
+        }
+
+        .hero h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28pt;
+            margin: 0;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #fff 0%, var(--neon-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 13pt;
+            color: var(--starlight);
+            max-width: 550px;
+            margin-top: 5mm;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10mm;
+            z-index: 10;
+        }
+
+        .feature-card {
+            background: rgba(0, 210, 255, 0.03);
+            border-left: 4px solid var(--neon-blue);
+            padding: 6mm;
+            border-radius: 1mm;
+            border-top: 1px solid rgba(0, 210, 255, 0.1);
+            border-right: 1px solid rgba(0, 210, 255, 0.1);
+        }
+
+        .feature-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12pt;
+            margin: 0 0 3mm 0;
+            color: var(--neon-blue);
+        }
+
+        .feature-card p {
+            font-size: 9.5pt;
+            color: var(--titanium);
+            margin: 0;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .compliance-bar {
+            margin-top: auto;
+            background: rgba(0, 210, 255, 0.15);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            padding: 6mm;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-radius: 2mm;
+            z-index: 10;
+        }
+
+        .compliance-item {
+            text-align: center;
+        }
+
+        .compliance-item strong {
+            display: block;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10pt;
+            color: white;
+        }
+
+        .compliance-item span {
+            font-size: 7pt;
+            color: var(--titanium);
+            text-transform: uppercase;
+        }
+
+        footer {
+            margin-top: 10mm;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 8.5pt;
+            color: var(--titanium);
+            z-index: 10;
+        }
+
+        .contact-info strong {
+            color: white;
+        }
+
+        .qr-box {
+            background: white;
+            padding: 1mm;
+            border-radius: 1mm;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <div class="grid-bg"></div>
+
+        <header>
+            <div class="logo">
+                <h1>AERO <span>IA PRO</span></h1>
+            </div>
+            <div style="font-family: monospace; color: var(--neon-blue);">REF: AS-9100_INT_V4</div>
+        </header>
+
+        <main>
+            <section class="hero">
+                <h2>AEROSPACE<br>PRECISION CLOUD</h2>
+                <p>Inteligencia industrial para el cumplimiento de estándares aeroespaciales globales. Elevando la
+                    precisión de Monterrey, N.L. al siguiente nivel.</p>
+            </section>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Auditoría Vision AI</h3>
+                    <p>Verificación cuadro por cuadro de ensambles críticos. Detección de FOD (Foreign Object Debris)
+                        mediante redes neuronales de alta resolución.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Trazabilidad Total</h3>
+                    <p>Hilo digital completo desde la materia prima hasta el componente final. Cumplimiento nativo con
+                        normativas aeronáuticas internacionales.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Gemelo Digital Táctico</h3>
+                    <p>Análisis predictivo de fatiga operativa y optimización de flujos de trabajo en hangares y líneas
+                        de montaje aeroespacial.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Ingeniería Colaborativa</h3>
+                    <p>Ecosistema HUB integrado para la gestión de SOPs multilingües y soporte técnico asistido por IA
+                        en tiempo real.</p>
+                </div>
+            </div>
+
+            <p
+                style="margin-top: 10mm; font-size: 10pt; color: var(--titanium); font-style: italic; border-left: 2px solid var(--neon-blue); padding-left: 5mm;">
+                "La manufactura avanzada requiere herramientas de precisión avanzada. Aero IA Pro es el estándar para la
+                próxima generación de proveedores aeroespaciales."
+            </p>
+        </main>
+
+        <section class="compliance-bar">
+            <div class="compliance-item">
+                <strong>AS9100</strong>
+                <span>Certified Ready</span>
+            </div>
+            <div style="width: 1px; height: 8mm; background: rgba(255,255,255,0.1);"></div>
+            <div class="compliance-item">
+                <strong>ISO 9001</strong>
+                <span>Quality Management</span>
+            </div>
+            <div style="width: 1px; height: 8mm; background: rgba(255,255,255,0.1);"></div>
+            <div class="compliance-item">
+                <strong>AES-256</strong>
+                <span>Data Protection</span>
+            </div>
+        </section>
+
+        <footer>
+            <div class="contact-info">
+                <strong>IA.AGUS SOLUTIONS</strong><br>
+                Torreón, Coah.<br>
+                <a href="https://aero.ia-agus.com"
+                    style="color: var(--neon-blue); text-decoration: none;">aero.ia-agus.com</a>
+            </div>
+            <div style="display: flex; gap: 4mm; align-items: center;">
+                <div style="text-align: right; font-size: 7pt;">
+                    SCAN FOR TECH SPECS
+                </div>
+                <div class="qr-box">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://aero.ia-agus.com"
+                        style="width: 36px;">
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>
