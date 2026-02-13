@@ -136,21 +136,76 @@ const SettingsView: React.FC = () => {
                         </div>
                     </div>
                 </div>
+
+                {/* Industrial Integrations */}
+                <div className="glass-panel p-6 border border-cyber-blue/20 rounded-2xl bg-cyber-dark/40 md:col-span-2">
+                    <div className="flex items-center justify-between mb-8">
+                        <div className="flex items-center gap-3">
+                            <div className="p-2 bg-orange-500/10 rounded-lg text-orange-400">
+                                <Database size={24} />
+                            </div>
+                            <h3 className="font-tech text-xl text-white uppercase">Ecosistema de Integración</h3>
+                        </div>
+                        <div className="flex gap-2">
+                            <span className="px-3 py-1 bg-emerald-500/10 text-emerald-400 rounded-full text-[10px] font-bold border border-emerald-500/20 uppercase tracking-widest">Sincronizado</span>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="p-4 bg-white/5 border border-white/10 rounded-xl">
+                            <div className="flex justify-between items-center mb-2">
+                                <span className="text-[10px] text-zinc-400 font-mono font-bold">MRO CONNECTOR</span>
+                                <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
+                            </div>
+                            <h4 className="text-white font-tech text-sm">Quantum / TRAX / CAMP</h4>
+                            <p className="text-[10px] text-zinc-500 font-mono mt-1 italic">Conexión Bidireccional Activa</p>
+                        </div>
+                        <div className="p-4 bg-white/5 border border-white/10 rounded-xl">
+                            <div className="flex justify-between items-center mb-2">
+                                <span className="text-[10px] text-zinc-400 font-mono font-bold">ERP GATEWAY</span>
+                                <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></div>
+                            </div>
+                            <h4 className="text-white font-tech text-sm">SAP Aviation Cloud</h4>
+                            <p className="text-[10px] text-purple-400 font-mono mt-1 font-bold uppercase">Beta Access Q2 2026</p>
+                        </div>
+                        <div className="p-4 bg-white/5 border border-white/10 rounded-xl opacity-50">
+                            <div className="flex justify-between items-center mb-2">
+                                <span className="text-[10px] text-zinc-400 font-mono font-bold">FUTURE LINK</span>
+                                <div className="w-2 h-2 rounded-full bg-zinc-600"></div>
+                            </div>
+                            <h4 className="text-white font-tech text-sm">Oracle Cloud</h4>
+                            <p className="text-[10px] text-zinc-500 font-mono mt-1">Roadmap Q3 2026</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            {/* Documentation Center - Knowledge Base Ingestion */}
+            {/* Knowledge Center & Documentation */}
             <div className="glass-panel p-8 border border-cyber-blue/20 rounded-2xl bg-cyber-dark/40 relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
-                    <Database size={120} className="text-cyber-blue" />
+                    <Brain size={120} className="text-cyber-blue" />
                 </div>
 
-                <div className="flex items-center gap-3 mb-8 relative z-10">
-                    <div className="p-2 bg-cyber-blue/10 rounded-lg text-cyber-blue shadow-neon-blue/20">
-                        <Database size={24} />
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 relative z-10">
+                    <div className="flex items-center gap-3">
+                        <div className="p-2 bg-cyber-blue/10 rounded-lg text-cyber-blue shadow-neon-blue/20">
+                            <Brain size={24} />
+                        </div>
+                        <div>
+                            <h3 className="font-tech text-xl text-white">CENTRO DE CONOCIMIENTO & DOCUMENTACIÓN</h3>
+                            <p className="text-[10px] text-cyber-blue/50 font-mono uppercase tracking-widest mt-1">Videos Tutoriales, AS9100 & RAG Engine</p>
+                        </div>
                     </div>
-                    <div>
-                        <h3 className="font-tech text-xl text-white">CENTRO DE DOCUMENTACIÓN TÉCNICA</h3>
-                        <p className="text-[10px] text-cyber-blue/50 font-mono uppercase tracking-widest mt-1">Alimentación de Cerebro IA // Knowledge Base Ingestion</p>
+
+                    <div className="flex gap-4">
+                        <button className="flex items-center gap-2 px-4 py-2 bg-cyber-blue/10 border border-cyber-blue/30 rounded-lg text-cyber-blue text-xs font-tech hover:bg-cyber-blue/20 transition-all">
+                            <Shield size={14} />
+                            NORMATIVA AS9100
+                        </button>
+                        <button className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-400 text-xs font-tech hover:bg-emerald-500/20 transition-all">
+                            <CheckCircle2 size={14} />
+                            VER TUTORIALES
+                        </button>
                     </div>
                 </div>
 
@@ -160,9 +215,9 @@ const SettingsView: React.FC = () => {
 
                 <div className="mt-8 p-4 bg-emerald-500/5 border border-emerald-500/20 rounded-xl relative z-10">
                     <div className="flex gap-3">
-                        <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+                        <Brain size={16} className="text-emerald-500 shrink-0 mt-0.5" />
                         <p className="text-[11px] text-emerald-500/80 leading-relaxed font-mono">
-                            <strong className="text-emerald-400">OPTIMIZACIÓN RAG:</strong> La IA priorizará estos manuales para responder consultas técnicas en MRO Expert, Falcon Eye y Virtual Trainer.
+                            <strong className="text-emerald-400">OPTIMIZACIÓN RAG + AS9100:</strong> La IA priorizará estos manuales y normativas para responder consultas técnicas en MRO Expert, Falcon Eye y Virtual Trainer.
                         </p>
                     </div>
                 </div>
