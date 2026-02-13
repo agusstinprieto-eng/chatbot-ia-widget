@@ -69,6 +69,18 @@ const LiveVoiceCall: React.FC<LiveVoiceCallProps> = ({ isOpen, onClose, systemIn
     }, [isActive]);
 
     const stopSession = useCallback(() => {
+        // Stop speech recognition
+        if (sessionRef.current) {
+            try {
+                sessionRef.current.stop();
+            } catch (e) {
+                console.error("Error stopping recognition:", e);
+            }
+        }
+
+        // Stop any ongoing speech synthesis
+        window.speechSynthesis.cancel();
+
         if (processorRef.current) processorRef.current.disconnect();
         if (streamRef.current) streamRef.current.getTracks().forEach(t => t.stop());
         sourcesRef.current.forEach(s => { try { s.stop(); } catch (e) { } });
@@ -80,20 +92,103 @@ const LiveVoiceCall: React.FC<LiveVoiceCallProps> = ({ isOpen, onClose, systemIn
         setIsConnecting(false);
         setIsModelSpeaking(false);
         setVolume(0);
+        setTranscription({ user: '', model: '' });
     }, []);
 
     const startSession = async () => {
         setError(null);
         setIsConnecting(true);
         try {
-            // Gemini Live API requires WebSocket connection
-            // For now, showing informative message to user
-            setError(
-                language === 'es'
-                    ? "Gemini Live API requiere configuración adicional. Por favor contacta al administrador para habilitar esta función."
-                    : "Gemini Live API requires additional setup. Please contact administrator to enable this feature."
-            );
-            setIsConnecting(false);
+            // Check for Web Speech API support
+            const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                throw new Error(language === 'es'
+                    ? "Tu navegador no soporta reconocimiento de voz. Usa Chrome o Edge."
+                    : "Your browser doesn't support speech recognition. Use Chrome or Edge.");
+            }
+
+            // Initialize speech recognition
+            const recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = language === 'es' ? 'es-ES' : 'en-US';
+
+            recognition.onstart = () => {
+                console.log("Voice recognition started");
+                setIsActive(true);
+                setIsConnecting(false);
+            };
+
+            recognition.onresult = async (event: any) => {
+                const transcript = Array.from(event.results)
+                    .map((result: any) => result[0])
+                    .map((result: any) => result.transcript)
+                    .join('');
+
+                setTranscription(prev => ({ ...prev, user: transcript }));
+
+                // Send to AI when final result
+                if (event.results[event.results.length - 1].isFinal) {
+                    setIsModelSpeaking(true);
+                    try {
+                        const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/aero-ai`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+                            },
+                            body: JSON.stringify({
+                                action: 'live-voice-audio',
+                                payload: {
+                                    text: transcript,
+                                    sessionId: 'voice-session'
+                                }
+                            })
+                        });
+
+                        const data = await response.json();
+                        const aiResponse = data.result;
+                        setTranscription(prev => ({ ...prev, model: aiResponse }));
+
+                        // Speak the response
+                        const utterance = new SpeechSynthesisUtterance(aiResponse);
+                        utterance.lang = language === 'es' ? 'es-ES' : 'en-US';
+                        utterance.rate = 1.0;
+                        utterance.pitch = 1.0;
+
+                        utterance.onend = () => {
+                            setIsModelSpeaking(false);
+                        };
+
+                        window.speechSynthesis.speak(utterance);
+                    } catch (err) {
+                        console.error("AI response error:", err);
+                        setIsModelSpeaking(false);
+                    }
+                }
+            };
+
+            recognition.onerror = (event: any) => {
+                console.error("Speech recognition error:", event.error);
+                if (event.error === 'no-speech') {
+                    // Ignore no-speech errors, they're normal
+                    return;
+                }
+                setError(language === 'es'
+                    ? `Error de reconocimiento: ${event.error}`
+                    : `Recognition error: ${event.error}`);
+            };
+
+            recognition.onend = () => {
+                if (isActive) {
+                    // Restart if still active
+                    recognition.start();
+                }
+            };
+
+            sessionRef.current = recognition;
+            recognition.start();
+
         } catch (err: any) {
             setError(err.message);
             setIsConnecting(false);
