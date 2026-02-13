@@ -36,8 +36,8 @@ const CostingView: React.FC = () => {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-6">
                 <div>
                     <h2 className="text-3xl font-tech font-bold text-white tracking-wider flex items-center gap-3">
-                        <Calculator className="text-cyber-purple w-8 h-8" />
-                        AERO <span className="text-cyber-purple">COSTING</span> CALCULATOR
+                        <Calculator className="text-cyber-blue w-8 h-8" />
+                        AERO <span className="text-cyber-blue">COSTING</span> CALCULATOR
                     </h2>
                     <p className="text-zinc-500 text-sm mt-1">Strategic financial modeling for aerospace manufacturing units</p>
                 </div>
@@ -57,7 +57,7 @@ const CostingView: React.FC = () => {
                 {/* Inputs Panel */}
                 <div className="lg:col-span-5 space-y-6 overflow-hidden">
                     <div className="flex items-center gap-2 mb-2 px-1">
-                        <Settings className="w-4 h-4 text-cyber-purple" />
+                        <Settings className="w-4 h-4 text-cyber-blue" />
                         <span className="text-xs font-black text-zinc-400 uppercase tracking-[0.2em]">Operational Parameters</span>
                     </div>
 
@@ -68,7 +68,7 @@ const CostingView: React.FC = () => {
                                 <button
                                     key={proc.id}
                                     className={`flex items-center gap-3 p-3 rounded-xl border transition-all text-left
-                                              ${costInputs.sam > 300 && proc.id === 'aerospace' ? 'bg-cyber-purple/20 border-cyber-purple text-white' : 'bg-white/5 border-white/5 text-zinc-500'}`}
+                                              ${costInputs.sam > 300 && proc.id === 'aerospace' ? 'bg-cyber-blue/20 border-cyber-blue text-white' : 'bg-white/5 border-white/5 text-zinc-500'}`}
                                 >
                                     {proc.icon}
                                     <span className="text-[10px] font-bold uppercase tracking-widest">{proc.name}</span>
@@ -79,7 +79,7 @@ const CostingView: React.FC = () => {
                         {/* SAM / Cycle Time */}
                         <div className="space-y-4">
                             <div className="flex justify-between items-end">
-                                <label className="text-[10px] font-black text-cyber-purple uppercase tracking-widest">Std. Cycle Time (SAM)</label>
+                                <label className="text-[10px] font-black text-cyber-blue uppercase tracking-widest">Std. Cycle Time (SAM)</label>
                                 <span className="text-xl font-tech font-bold text-white">{costInputs.sam} <small className="text-[10px] text-zinc-500 uppercase">min</small></span>
                             </div>
                             <input
@@ -89,7 +89,7 @@ const CostingView: React.FC = () => {
                                 step="5"
                                 value={costInputs.sam}
                                 onChange={(e) => updateCostInput('sam', parseFloat(e.target.value))}
-                                className="w-full accent-cyber-purple"
+                                className="w-full accent-cyber-blue"
                             />
                         </div>
 
@@ -176,10 +176,10 @@ const CostingView: React.FC = () => {
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div className="glass-panel rounded-2xl p-6 border-white/5 bg-gradient-to-br from-cyber-purple/10 to-transparent flex flex-col justify-between">
+                        <div className="glass-panel rounded-2xl p-6 border-white/5 bg-gradient-to-br from-cyber-blue/10 to-transparent flex flex-col justify-between">
                             <div className="flex justify-between items-start">
-                                <p className="text-[10px] font-black text-cyber-purple uppercase tracking-widest">Minute Cost</p>
-                                <DollarSign className="w-4 h-4 text-cyber-purple opacity-40" />
+                                <p className="text-[10px] font-black text-cyber-blue uppercase tracking-widest">Minute Cost</p>
+                                <DollarSign className="w-4 h-4 text-cyber-blue opacity-40" />
                             </div>
                             <div className="mt-8">
                                 <p className="text-3xl font-tech font-bold text-white">${results.minuteCost.toFixed(4)}</p>
@@ -213,7 +213,7 @@ const CostingView: React.FC = () => {
                                     <span className="text-white">${(costInputs.sam * results.minuteCost).toFixed(2)}</span>
                                 </div>
                                 <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
-                                    <div className="h-full bg-cyber-purple" style={{ width: '40%' }}></div>
+                                    <div className="h-full bg-cyber-blue" style={{ width: '40%' }}></div>
                                 </div>
                             </div>
 
