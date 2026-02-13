@@ -1,15 +1,12 @@
-<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="0" y="0" width="64" height="64" rx="16" fill="#050510"/>
-  <!-- Plane/Arrow silhouette -->
-  <path d="M32 12L52 48L32 40L12 48L32 12Z" fill="url(#neon-gradient)" />
-  <!-- Accent dots -->
-  <circle cx="32" cy="18" r="2" fill="#bc13fe" />
-  <circle cx="48" cy="45" r="2" fill="#00f3ff" />
-  <circle cx="16" cy="45" r="2" fill="#00f3ff" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
-    <linearGradient id="neon-gradient" x1="12" y1="12" x2="52" y2="48" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#00f3ff"/>
-      <stop offset="1" stop-color="#bc13fe"/>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00f0ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0080ff;stop-opacity:1" />
     </linearGradient>
   </defs>
+  <rect width="64" height="64" rx="14" fill="#0a0a14"/>
+  <g transform="translate(32,32) rotate(-45)">
+    <path d="M0,-22 L6,-8 L6,2 L18,10 L18,14 L6,10 L6,16 L10,19 L10,22 L0,19 L-10,22 L-10,19 L-6,16 L-6,10 L-18,14 L-18,10 L-6,2 L-6,-8 Z" fill="url(#g)" opacity="0.95"/>
+  </g>
 </svg>
