@@ -10,7 +10,8 @@ import {
   Globe,
   Calculator,
   Sparkles,
-  GraduationCap
+  GraduationCap,
+  Plane
 } from 'lucide-react';
 import { ModuleType } from '../../types';
 import ReportChat from './ReportChat';
@@ -43,15 +44,15 @@ const Layout: React.FC<LayoutProps> = ({ children, activeModule, onNavigate, isC
       {/* HUD Header */}
       <header className={`sticky top-0 z-50 px-6 py-4 flex items-center justify-between border-b ${isCriticalAlert ? 'border-red-600 animate-pulse bg-red-950/20' : 'border-cyber-blue/20'} glass-panel`}>
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-cyber-blue/10 border border-cyber-blue rounded flex items-center justify-center font-bold text-cyber-blue italic glow-blue font-tech">IA</div>
+          <div className="w-10 h-10 bg-cyber-blue/10 border border-cyber-blue rounded flex items-center justify-center text-cyber-blue glow-blue">
+            <Plane size={24} className="rotate-45" />
+          </div>
           <div className="relative group">
             <div className="absolute -inset-1 bg-cyber-blue/20 blur-md rounded-lg opacity-40 group-hover:opacity-60 transition-opacity"></div>
             <div className="relative bg-cyber-black/60 px-4 py-1.5 rounded-lg border border-cyber-blue/20 backdrop-blur-sm">
               <h1 className="text-lg font-bold tracking-tighter flex items-center gap-2 font-tech leading-none">
                 <span className="text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">AERO</span>
-                <span className="text-cyber-blue drop-shadow-[0_0_10px_rgba(0,251,255,0.5)]">.SYS</span>
-                <span className="text-white/20 mx-0.5">//</span>
-                <span className="bg-gradient-to-r from-cyber-blue via-white to-cyber-blue bg-[length:200%_auto] animate-gradient-x bg-clip-text text-transparent italic font-black">IA-PRO</span>
+                <span className="bg-gradient-to-r from-cyber-blue via-white to-cyber-blue bg-[length:200%_auto] animate-gradient-x bg-clip-text text-transparent italic font-black">IA PRO</span>
                 {isCriticalAlert && (
                   <span className="bg-red-600 text-[10px] px-2 py-0.5 rounded animate-bounce shadow-[0_0_15px_rgba(220,38,38,0.8)] text-white ml-2">ALERT</span>
                 )}
