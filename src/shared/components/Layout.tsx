@@ -27,15 +27,15 @@ const Layout: React.FC<LayoutProps> = ({ children, activeModule, onNavigate, isC
   const { language, setLanguage, t } = useLanguage();
 
   const navItems = [
-    { id: ModuleType.DASHBOARD, icon: <LayoutDashboard />, label: 'Dashboard' },
-    { id: ModuleType.FALCON_EYE, icon: <ShieldCheck />, label: 'Falcon Eye' },
-    { id: ModuleType.MRO_EXPERT, icon: <BrainCircuit />, label: 'MRO Expert' },
-    { id: ModuleType.LEAN_ORBIT, icon: <Activity />, label: 'Lean Orbit' },
-    { id: ModuleType.GLOBAL_INTEL, icon: <Globe />, label: 'Global Intel' },
-    { id: ModuleType.COSTING, icon: <Calculator />, label: 'Costing' },
-    { id: ModuleType.AI_ANALYST, icon: <Sparkles />, label: 'Aero Analyst' },
-    { id: ModuleType.VIRTUAL_TRAINER, icon: <GraduationCap />, label: 'Virtual Trainer' },
-    { id: ModuleType.SETTINGS, icon: <Settings />, label: 'Configuración' },
+    { id: ModuleType.DASHBOARD, icon: <LayoutDashboard />, label: t('nav.dashboard') },
+    { id: ModuleType.FALCON_EYE, icon: <ShieldCheck />, label: t('nav.falcon_eye') },
+    { id: ModuleType.MRO_EXPERT, icon: <BrainCircuit />, label: t('nav.mro_expert') },
+    { id: ModuleType.LEAN_ORBIT, icon: <Activity />, label: t('nav.lean_orbit') },
+    { id: ModuleType.GLOBAL_INTEL, icon: <Globe />, label: t('nav.global_intel') },
+    { id: ModuleType.COSTING, icon: <Calculator />, label: t('nav.costing') },
+    { id: ModuleType.AI_ANALYST, icon: <Sparkles />, label: t('nav.aero_analyst') },
+    { id: ModuleType.VIRTUAL_TRAINER, icon: <GraduationCap />, label: t('nav.virtual_trainer') },
+    { id: ModuleType.SETTINGS, icon: <Settings />, label: t('nav.settings') },
   ];
 
   return (
@@ -44,12 +44,20 @@ const Layout: React.FC<LayoutProps> = ({ children, activeModule, onNavigate, isC
       <header className={`sticky top-0 z-50 px-6 py-4 flex items-center justify-between border-b ${isCriticalAlert ? 'border-red-600 animate-pulse bg-red-950/20' : 'border-cyber-blue/20'} glass-panel`}>
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-cyber-blue/10 border border-cyber-blue rounded flex items-center justify-center font-bold text-cyber-blue italic glow-blue font-tech">IA</div>
-          <div>
-            <h1 className="text-xl font-bold tracking-tight flex items-center gap-2 text-white shadow-neon-blue font-tech">
-              AERO.SYS // IA-PRO
-              {isCriticalAlert && <span className="bg-red-600 text-[10px] px-2 py-0.5 rounded animate-bounce shadow-[0_0_10px_rgba(220,38,38,0.8)]">CRITICAL ALERT</span>}
-            </h1>
-            <p className="text-[10px] text-cyber-blue/70 uppercase tracking-[0.3em] font-mono">Aerospace Cluster Baja California</p>
+          <div className="relative group">
+            <div className="absolute -inset-1 bg-cyber-blue/20 blur-md rounded-lg opacity-40 group-hover:opacity-60 transition-opacity"></div>
+            <div className="relative bg-cyber-black/60 px-4 py-1.5 rounded-lg border border-cyber-blue/20 backdrop-blur-sm">
+              <h1 className="text-lg font-bold tracking-tighter flex items-center gap-2 font-tech leading-none">
+                <span className="text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">AERO</span>
+                <span className="text-cyber-blue drop-shadow-[0_0_10px_rgba(0,251,255,0.5)]">.SYS</span>
+                <span className="text-white/20 mx-0.5">//</span>
+                <span className="bg-gradient-to-r from-cyber-blue via-white to-cyber-blue bg-[length:200%_auto] animate-gradient-x bg-clip-text text-transparent italic font-black">IA-PRO</span>
+                {isCriticalAlert && (
+                  <span className="bg-red-600 text-[10px] px-2 py-0.5 rounded animate-bounce shadow-[0_0_15px_rgba(220,38,38,0.8)] text-white ml-2">ALERT</span>
+                )}
+              </h1>
+            </div>
+            <p className="text-[9px] text-cyber-blue/50 uppercase tracking-[0.4em] font-mono mt-1.5 ml-1 transition-colors hover:text-cyber-blue cursor-default">Aerospace Cluster Baja California</p>
           </div>
         </div>
 
@@ -117,9 +125,9 @@ const Layout: React.FC<LayoutProps> = ({ children, activeModule, onNavigate, isC
               <p className="text-xs font-mono text-cyber-blue/80">LAT: 32.5149° N</p>
               <p className="text-xs font-mono text-cyber-blue/80">LON: 117.0382° W</p>
             </div>
-            <button className="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-red-400 transition-colors w-full">
-              <User size={20} />
-              <span className="hidden md:block text-sm font-medium">Operator Exit</span>
+            <button className="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-red-400 transition-colors w-full group">
+              <User size={20} className="group-hover:drop-shadow-[0_0_5px_rgba(248,113,113,0.4)]" />
+              <span className="hidden md:block text-sm font-medium">{t('nav.operator_exit')}</span>
             </button>
           </div>
         </aside>
