@@ -52,6 +52,18 @@ const DEMO_USERS: Record<string, { password: string; user: User }> = {
             company: 'IA.AGUS',
             isUnlimited: true
         }
+    },
+    'tomas': {
+        password: 'Sibaja',
+        user: {
+            id: 'tomas-sibaja-id',
+            email: 'tomas',
+            name: 'Tomas Sibaja',
+            role: 'manager',
+            company: 'Aero Aerospace',
+            analysisLimit: 50,
+            supportMinutes: 60
+        }
     }
 };
 
