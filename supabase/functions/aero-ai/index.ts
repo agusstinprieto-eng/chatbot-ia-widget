@@ -56,10 +56,13 @@ Deno.serve(async (req) => {
             const visionModel = genAI.getGenerativeModel({
                 model: "gemini-2.0-flash",
                 generationConfig: { responseMimeType: "application/json" },
-                systemInstruction: `Analyze visual defects for aerospace components. 
-          Cross-reference with AS9100 Rev D standards.
-          Identify if the defect is a flight safety risk.
-          Generate a professional NCR.
+                systemInstruction: `Analyze visual defects for aerospace components acting as an AS9100 Rev D Quality Auditor. 
+          1. Classify the defect.
+          2. Determine if it is a flight safety risk (Critical).
+          3. Generate a Non-Conformance Report (NCR) text.
+          4. Cite the SPECIFIC AS9100 Rev D Clause (e.g., "8.7.1").
+          5. Define the immediate required action (e.g., Segregate, Scrap, Rework).
+          
           Return JSON format:
           {
             "isCritical": boolean,

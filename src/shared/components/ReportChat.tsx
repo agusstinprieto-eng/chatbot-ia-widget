@@ -26,6 +26,7 @@ const ReportChat: React.FC<ReportChatProps> = ({ analysisContext, language }) =>
     const [searchCount, setSearchCount] = useState(0);
 
     const STORAGE_KEY = 'aero_search_limit';
+    const CHAT_HISTORY_KEY = 'aero_chat_history';
 
     // Daily Limit Logic
     useEffect(() => {
@@ -43,7 +44,24 @@ const ReportChat: React.FC<ReportChatProps> = ({ analysisContext, language }) =>
         } else {
             localStorage.setItem(STORAGE_KEY, JSON.stringify({ date: today, count: 0 }));
         }
+
+        // Load Chat History
+        const savedMessages = localStorage.getItem(CHAT_HISTORY_KEY);
+        if (savedMessages) {
+            try {
+                setMessages(JSON.parse(savedMessages));
+            } catch (e) {
+                console.error("Failed to parse chat history", e);
+            }
+        }
     }, []);
+
+    // Persist Chat History
+    useEffect(() => {
+        if (messages.length > 0) {
+            localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(messages));
+        }
+    }, [messages]);
 
     const incrementSearchCount = () => {
         const today = new Date().toISOString().split('T')[0];
@@ -97,6 +115,7 @@ const ReportChat: React.FC<ReportChatProps> = ({ analysisContext, language }) =>
     const clearHistory = () => {
         if (window.confirm('Delete all messages from this session?')) {
             setMessages([]);
+            localStorage.removeItem(CHAT_HISTORY_KEY);
         }
     };
 
@@ -321,8 +340,8 @@ const ReportChat: React.FC<ReportChatProps> = ({ analysisContext, language }) =>
 
     return (
         <div className={`glass-panel rounded-2xl border-cyber-blue/20 flex flex-col transition-all duration-500 overflow-hidden ${isMaximized
-                ? 'fixed inset-4 z-50'
-                : 'h-[calc(100vh-12rem)] min-h-[600px] shadow-2xl'
+            ? 'fixed inset-4 z-50'
+            : 'h-[calc(100vh-12rem)] min-h-[600px] shadow-2xl'
             }`}>
             {/* Chat Header */}
             <div className="px-4 py-3 bg-cyber-dark/80 border-b border-cyber-blue/10 flex items-center justify-between">

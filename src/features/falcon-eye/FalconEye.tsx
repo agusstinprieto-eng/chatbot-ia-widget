@@ -1,5 +1,6 @@
+
 import React, { useState, useRef } from 'react';
-import { Camera, ShieldAlert, CheckCircle, AlertTriangle, FileWarning, Loader2, Lock, Upload, X } from 'lucide-react';
+import { ShieldAlert, AlertTriangle, Loader2, Lock, Upload, X, CheckCircle2, FileText, ChevronRight } from 'lucide-react';
 import { falconEyeInspection } from '../../services/ai/geminiService';
 
 const FalconEye: React.FC<{ setCriticalAlert: (val: boolean) => void }> = ({ setCriticalAlert }) => {
@@ -15,9 +16,7 @@ const FalconEye: React.FC<{ setCriticalAlert: (val: boolean) => void }> = ({ set
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result as string);
-      };
+      reader.onloadend = () => setSelectedImage(reader.result as string);
       reader.readAsDataURL(file);
     }
   };
@@ -41,7 +40,7 @@ const FalconEye: React.FC<{ setCriticalAlert: (val: boolean) => void }> = ({ set
       }
     } catch (error: any) {
       console.error(error);
-      setError(error.message || "Assessment failed. Please check network/API configuration.");
+      setError(error.message || "Assessment failed. Check network.");
     } finally {
       setLoading(false);
     }
@@ -57,143 +56,163 @@ const FalconEye: React.FC<{ setCriticalAlert: (val: boolean) => void }> = ({ set
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="mb-8 p-6 glass-panel rounded-2xl">
-        <h2 className="text-3xl font-bold text-white flex items-center gap-3 glow-text-blue font-tech tracking-wider">
-          <Camera className="text-cyber-blue" />
-          FALCON EYE
-        </h2>
-        <p className="text-cyber-blue/70 font-mono text-sm mt-2">&gt;&gt; Quality Inspection & NCR Generator (AS9100 Rev D)</p>
-      </div>
+    <div className="max-w-6xl mx-auto grid lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom duration-500">
 
-      <div className="grid md:grid-cols-3 gap-6">
-        <div className="md:col-span-2 space-y-6">
-          <div className="glass-panel p-6 rounded-2xl">
-            {error && (
-              <div className="mb-4 p-4 bg-red-950/40 border border-red-500/50 rounded-lg flex items-center gap-3 text-red-400 backdrop-blur-sm">
-                <AlertTriangle size={20} />
-                <p className="text-sm font-medium font-mono">{error}</p>
-              </div>
-            )}
+      {/* LEFT COLUMN - INPUT & RESULTS */}
+      <div className="lg:col-span-2 space-y-6">
+
+        {/* INPUT PANEL */}
+        <div className="glass-panel p-1 rounded-2xl relative group overflow-hidden border-cyber-blue/30">
+          <div className="absolute inset-0 bg-cyber-blue/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+
+          <div className="p-6">
             <div className="flex justify-between items-center mb-4">
-              <label className="block text-sm font-bold text-cyber-blue uppercase tracking-wider font-tech">Defect Description / Observations</label>
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleImageChange}
-                accept="image/*"
-                className="hidden"
-              />
+              <h3 className="text-xs font-bold text-cyber-blue uppercase tracking-widest font-tech flex items-center gap-2">
+                <div className="w-1.5 h-1.5 bg-cyber-blue rounded-sm shadow-neon-blue" />
+                DEFECT DESCRIPTION / OBSERVATIONS
+              </h3>
+
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="text-xs bg-cyber-dark/50 hover:bg-cyber-blue/10 text-cyber-blue px-3 py-1.5 rounded-lg flex items-center gap-2 transition-all border border-cyber-blue/30 hover:border-cyber-blue hover:glow-blue font-mono"
+                className="text-[10px] font-bold uppercase tracking-wider text-cyber-blue/60 hover:text-cyber-blue border border-cyber-blue/20 hover:border-cyber-blue/50 px-3 py-1.5 rounded transition-all flex items-center gap-2 group/btn"
               >
-                <Upload size={14} /> Upload Image
+                <Upload size={12} className="group-hover/btn:-translate-y-0.5 transition-transform" />
+                {selectedImage ? 'Change Image' : 'Upload Image'}
               </button>
+              <input type="file" ref={fileInputRef} onChange={handleImageChange} accept="image/*" className="hidden" />
             </div>
 
-            {selectedImage && (
-              <div className="relative mb-4 group inline-block">
-                <img src={selectedImage} alt="Preview" className="h-40 rounded-lg border border-blue-500/50 shadow-[0_0_15px_rgba(59,130,246,0.3)]" />
-                <button
-                  onClick={removeImage}
-                  className="absolute -top-2 -right-2 bg-red-600 text-white p-1 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <X size={14} />
-                </button>
-              </div>
-            )}
-
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter defect details or let IA analyze the image..."
-              className="w-full h-32 bg-cyber-black/50 border border-cyber-blue/30 rounded-lg p-4 text-white focus:border-cyber-blue focus:ring-1 focus:ring-cyber-blue/50 outline-none transition-all resize-none font-mono text-xs placeholder-cyber-blue/30"
-            />
-            <div className="mt-4 flex gap-4">
-              <button
-                onClick={handleInspection}
-                disabled={loading || (!description && !selectedImage)}
-                className="flex-1 bg-cyber-blue hover:bg-cyber-blue/80 disabled:bg-gray-900 disabled:text-gray-600 text-black font-bold py-3 rounded-lg transition-all flex items-center justify-center gap-2 hover:shadow-neon-blue font-tech tracking-widest"
-              >
-                {loading ? <Loader2 className="animate-spin text-black" /> : <><ShieldAlert size={20} /> RUN COMPLIANCE CHECK</>}
-              </button>
+            <div className="relative">
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Describe the defect or observation here..."
+                className="w-full h-40 bg-cyber-black border border-cyber-blue/20 rounded-xl p-4 text-white text-sm font-mono focus:border-cyber-blue focus:ring-1 focus:ring-cyber-blue/50 outline-none transition-all resize-none placeholder-cyber-blue/20"
+              />
+              {selectedImage && (
+                <div className="absolute bottom-4 right-4 group/img">
+                  <img src={selectedImage} alt="Preview" className="h-16 w-16 object-cover rounded border border-cyber-blue/50 shadow-lg" />
+                  <button onClick={removeImage} className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover/img:opacity-100 transition-opacity">
+                    <X size={10} />
+                  </button>
+                </div>
+              )}
             </div>
+
+            <button
+              onClick={handleInspection}
+              disabled={loading || (!description && !selectedImage)}
+              className="w-full mt-4 bg-cyber-blue hover:bg-cyber-blue/80 disabled:bg-cyber-dark disabled:text-gray-500 text-black font-black uppercase tracking-widest py-4 rounded-xl transition-all shadow-neon-blue font-tech flex items-center justify-center gap-2"
+            >
+              {loading ? <Loader2 className="animate-spin" /> : <ShieldAlert size={18} />}
+              RUN COMPLIANCE CHECK
+            </button>
           </div>
+        </div>
 
-          {report && (
-            <div className={`p-6 rounded-2xl border transition-all duration-500 ${report.isCritical ? 'bg-red-950/40 border-red-500/50 shadow-[0_0_30px_rgba(220,38,38,0.2)]' : 'glass-panel shadow-neon-blue'}`}>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-bold flex items-center gap-2 text-white font-tech">
-                  {report.isCritical ? <AlertTriangle className="text-red-500" /> : <CheckCircle className="text-cyber-blue" />}
-                  COMPLIANCE ANALYSIS RESULT
-                </h3>
-                <span className={`px-3 py-1 rounded text-[10px] font-bold uppercase tracking-widest ${report.isCritical ? 'bg-red-600 text-white shadow-lg shadow-red-600/20' : 'bg-cyber-blue text-black shadow-lg shadow-neon-blue'}`}>
-                  {report.isCritical ? 'CRITICAL - SAFETY RISK' : 'REPORTABLE'}
-                </span>
+        {/* RESULTS PANEL */}
+        {report && (
+          <div className={`glass-panel p-1 rounded-2xl relative overflow-hidden transition-all duration-500 ${report.isCritical ? 'border-red-500 shadow-[0_0_40px_rgba(239,68,68,0.2)]' : 'border-cyber-blue shadow-neon-blue'}`}>
+            {/* Glow Background */}
+            <div className={`absolute inset-0 opacity-10 ${report.isCritical ? 'bg-red-500' : 'bg-cyber-blue'}`} />
+
+            <div className="p-6 relative z-10">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  {report.isCritical ? <AlertTriangle size={28} className="text-red-500 animate-pulse" /> : <CheckCircle2 size={28} className="text-cyber-blue" />}
+                  <div>
+                    <h3 className="text-lg font-black text-white font-tech tracking-wide leading-none">
+                      COMPLIANCE ANALYSIS RESULT
+                    </h3>
+                    <p className="text-[10px] font-mono uppercase tracking-widest opacity-60 mt-1">
+                      AS9100 REV D // AUTOMATED INSPECTION
+                    </p>
+                  </div>
+                </div>
+                <div className={`px-4 py-1.5 rounded font-bold text-[10px] uppercase tracking-widest border ${report.isCritical ? 'bg-red-500/20 border-red-500 text-red-500 drop-shadow-[0_0_5px_rgba(239,68,68,0.8)]' : 'bg-cyber-blue/20 border-cyber-blue text-cyber-blue drop-shadow-[0_0_5px_rgba(0,240,255,0.8)]'}`}>
+                  {report.isCritical ? 'CRITICAL NON-CONFORMANCE' : 'REPORTABLE FINDING'}
+                </div>
               </div>
 
               <div className="space-y-4">
                 <div>
-                  <p className="text-[10px] text-blue-300/60 uppercase font-bold mb-1 font-mono">Generated Non-Conformance Report (NCR)</p>
-                  <div className="mt-1 p-4 bg-slate-950/50 rounded-lg font-mono text-xs text-blue-100/90 border border-blue-900/50 leading-relaxed whitespace-pre-wrap shadow-inner">
+                  <p className="text-[10px] font-bold text-cyber-blue/60 uppercase tracking-wider mb-2 font-mono">Generated Non-Conformance Report (NCR)</p>
+                  <div className="p-4 bg-cyber-black/80 border border-cyber-blue/20 rounded-lg text-xs font-mono text-cyan-50 leading-relaxed shadow-inner">
                     {report.ncrText}
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="p-3 bg-blue-950/20 rounded-lg border border-blue-900/30">
-                    <p className="text-[10px] text-blue-300/60 uppercase font-bold mb-1 font-mono">Standard Reference</p>
-                    <p className="text-sm text-blue-400 font-mono font-bold">{report.standardRef}</p>
+                  <div className="p-3 bg-cyber-black/40 border border-cyber-blue/10 rounded-lg">
+                    <p className="text-[9px] font-bold text-cyber-blue/50 uppercase tracking-wider mb-1 font-mono">Standard Reference</p>
+                    <p className="text-sm font-mono text-cyber-blue font-bold">{report.standardRef}</p>
                   </div>
-                  <div className="p-3 bg-blue-950/20 rounded-lg border border-blue-900/30">
-                    <p className="text-[10px] text-blue-300/60 uppercase font-bold mb-1 font-mono">Required Action</p>
-                    <p className="text-sm text-blue-100/80">{report.actionRequired}</p>
+                  <div className="p-3 bg-cyber-black/40 border border-cyber-blue/10 rounded-lg">
+                    <p className="text-[9px] font-bold text-cyber-blue/50 uppercase tracking-wider mb-1 font-mono">Required Action</p>
+                    <p className="text-xs text-white/80">{report.actionRequired}</p>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        )}
+      </div>
+
+      {/* RIGHT COLUMN - SIDEBAR PANELS */}
+      <div className="space-y-6">
+
+        {/* AUTHORIZATION PANEL */}
+        <div className="glass-panel p-6 rounded-2xl h-fit border-cyber-blue/20">
+          <h3 className="text-xs font-bold text-cyber-blue uppercase tracking-widest font-tech mb-4 pb-2 border-b border-cyber-blue/10">
+            AUTHORIZATION
+          </h3>
+
+          {needsAuthorization ? (
+            <div className="space-y-4 animate-in fade-in duration-300">
+              <div className="p-6 border border-dashed border-red-500/30 bg-red-950/20 rounded-xl flex flex-col items-center justify-center text-center gap-3">
+                <Lock size={32} className="text-red-500" />
+                <div>
+                  <p className="text-red-500 font-bold text-xs uppercase tracking-wider">LOCKED FOR REVIEW</p>
+                  <p className="text-red-400/60 text-[10px] font-mono mt-1">Supervisor override required</p>
+                </div>
+              </div>
+              <button onClick={resetAlert} className="w-full py-3 bg-red-600 hover:bg-red-500 text-white text-xs font-black uppercase tracking-widest rounded-lg transition-all shadow-[0_0_15px_rgba(220,38,38,0.4)]">
+                ACKNOWLEDGE Alert
+              </button>
+            </div>
+          ) : (
+            <div className="py-8 flex flex-col items-center justify-center text-cyber-blue/30 space-y-2 border border-cyber-blue/5 bg-cyber-black/20 rounded-xl">
+              <p className="font-mono text-[10px] italic opacity-50">// System Status: Idle</p>
+              <p className="font-mono text-[10px] italic opacity-50">// Awaiting analysis...</p>
+            </div>
           )}
         </div>
 
-        <div className="space-y-6">
-          <div className="glass-panel p-6 rounded-2xl">
-            <h3 className="text-sm font-bold text-blue-400 uppercase tracking-widest mb-4 border-b border-blue-900/50 pb-2 font-tech">Authorization</h3>
-            {needsAuthorization ? (
-              <div className="space-y-4 animate-pulse">
-                <div className="flex flex-col items-center py-6 border-2 border-dashed border-red-500/50 rounded-lg bg-red-950/20">
-                  <Lock className="text-red-500 mb-2" size={32} />
-                  <p className="text-xs text-red-400 font-bold uppercase tracking-wider">Supervisor Override Req.</p>
+        {/* QUICKLINKS PANEL */}
+        <div className="glass-panel p-6 rounded-2xl h-fit border-cyber-blue/20">
+          <h3 className="text-xs font-bold text-cyber-blue uppercase tracking-widest font-tech mb-4 pb-2 border-b border-cyber-blue/10">
+            AS9100 REV D QUICKLINKS
+          </h3>
+          <ul className="space-y-3">
+            {[
+              { code: '8.7', label: 'Control of Nonconforming Outputs' },
+              { code: '10.2', label: 'Nonconformity & Corrective Action' },
+              { code: '9.1.2', label: 'Customer Satisfaction' },
+              { code: '7.5.3', label: 'Control of Documented Information' }
+            ].map((link, i) => (
+              <li key={i} className="group cursor-pointer">
+                <div className="flex items-center gap-3 p-2 rounded hover:bg-cyber-blue/5 transition-colors">
+                  <div className="w-1 h-1 bg-cyber-blue rounded-full group-hover:scale-150 group-hover:shadow-[0_0_8px_rgba(0,240,255,0.8)] transition-all" />
+                  <div>
+                    <p className="text-[10px] font-bold text-cyber-blue font-mono group-hover:text-white transition-colors">{link.code}</p>
+                    <p className="text-[10px] text-white/60 font-mono group-hover:text-cyber-blue/80 transition-colors">{link.label}</p>
+                  </div>
                 </div>
-                <button
-                  onClick={resetAlert}
-                  className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded-lg text-sm transition-all shadow-lg shadow-red-600/20 font-tech tracking-wide"
-                >
-                  ACKNOWLEDGE & CLEAR ALERT
-                </button>
-              </div>
-            ) : (
-              <div className="text-center py-8 text-blue-900/60 italic text-xs font-mono">
-                // System Status: Idle<br />
-                // Awaiting analysis...
-              </div>
-            )}
-          </div>
-
-          <div className="glass-panel p-6 rounded-2xl">
-            <h3 className="text-sm font-bold text-blue-400 uppercase tracking-widest mb-4 border-b border-blue-900/50 pb-2 font-tech">AS9100 Rev D Quicklinks</h3>
-            <ul className="space-y-3 text-xs text-blue-200/70 font-mono">
-              <li className="flex items-center gap-3 hover:text-blue-300 cursor-pointer transition-colors group">
-                <div className="w-1.5 h-1.5 bg-blue-600/50 rounded-full group-hover:bg-blue-400 group-hover:shadow-[0_0_10px_rgba(59,130,246,0.8)] transition-all"></div>
-                8.7 Control of Nonconforming Outputs
               </li>
-              <li className="flex items-center gap-3 hover:text-blue-300 cursor-pointer transition-colors group">
-                <div className="w-1.5 h-1.5 bg-blue-600/50 rounded-full group-hover:bg-blue-400 group-hover:shadow-[0_0_10px_rgba(59,130,246,0.8)] transition-all"></div>
-                10.2 Nonconformity & Corrective Action
-              </li>
-            </ul>
-          </div>
+            ))}
+          </ul>
         </div>
+
       </div>
     </div>
   );
