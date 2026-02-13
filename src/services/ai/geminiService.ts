@@ -8,7 +8,7 @@ const cleanJSON = (text: string) => {
 
 export const mroExpertQuery = async (query: string) => {
   try {
-    const { data, error } = await supabase.functions.invoke('aero-ai', {
+    const { data, error } = await supabase.functions.invoke('industrial-ai', {
       body: {
         action: 'mro-expert',
         payload: { query }
@@ -27,7 +27,7 @@ export const mroExpertQuery = async (query: string) => {
 
 export const falconEyeInspection = async (description: string, imageBase64?: string) => {
   try {
-    const { data, error } = await supabase.functions.invoke('aero-ai', {
+    const { data, error } = await supabase.functions.invoke('industrial-ai', {
       body: {
         action: 'falcon-eye',
         payload: {
@@ -55,7 +55,7 @@ export const chatWithReport = async (
   useSearch: boolean = false
 ) => {
   try {
-    const { data, error } = await supabase.functions.invoke('aero-ai', {
+    const { data, error } = await supabase.functions.invoke('industrial-ai', {
       body: {
         action: 'chat-report',
         payload: {
@@ -83,7 +83,7 @@ export const chatWithHelpDesk = async (
   useSearch: boolean = false
 ) => {
   try {
-    const { data, error } = await supabase.functions.invoke('aero-ai', {
+    const { data, error } = await supabase.functions.invoke('industrial-ai', {
       body: {
         action: 'chat-support',
         payload: {
@@ -109,7 +109,7 @@ export const startVirtualTraining = async (
   language: 'es' | 'en' = 'es'
 ) => {
   try {
-    const { data, error } = await supabase.functions.invoke('aero-ai', {
+    const { data, error } = await supabase.functions.invoke('industrial-ai', {
       body: {
         action: 'virtual-trainer',
         payload: {
