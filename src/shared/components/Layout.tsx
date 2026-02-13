@@ -16,6 +16,7 @@ import {
 import { ModuleType } from '../../types';
 import ReportChat from './ReportChat';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -26,6 +27,12 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children, activeModule, onNavigate, isCriticalAlert }) => {
   const { language, setLanguage, t } = useLanguage();
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    localStorage.removeItem('aero_chat_history');
+    logout();
+  };
 
   const navItems = [
     { id: ModuleType.DASHBOARD, icon: <LayoutDashboard />, label: t('nav.dashboard') },
@@ -126,7 +133,10 @@ const Layout: React.FC<LayoutProps> = ({ children, activeModule, onNavigate, isC
               <p className="text-xs font-mono text-cyber-blue/80">LAT: 32.5149° N</p>
               <p className="text-xs font-mono text-cyber-blue/80">LON: 117.0382° W</p>
             </div>
-            <button className="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-red-400 transition-colors w-full group">
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-red-400 transition-colors w-full group"
+            >
               <User size={20} className="group-hover:drop-shadow-[0_0_5px_rgba(248,113,113,0.4)]" />
               <span className="hidden md:block text-sm font-medium">{t('nav.operator_exit')}</span>
             </button>

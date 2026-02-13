@@ -1,9 +1,30 @@
 
 import React, { useState, useRef } from 'react';
-import { ShieldAlert, AlertTriangle, Loader2, Lock, Upload, X, CheckCircle2, FileText, ChevronRight } from 'lucide-react';
+import { ShieldAlert, AlertTriangle, Loader2, Lock, Upload, X, CheckCircle2, FileText, ChevronRight, History, Trash2, Clock } from 'lucide-react';
 import { falconEyeInspection } from '../../services/ai/geminiService';
 
+interface AuditRecord {
+  id: string;
+  timestamp: number;
+  date: string;
+  description: string;
+  report: any;
+}
+
 const FalconEye: React.FC<{ setCriticalAlert: (val: boolean) => void }> = ({ setCriticalAlert }) => {
+  const [history, setHistory] = useState<AuditRecord[]>([]);
+  const [viewMode, setViewMode] = useState<'quicklinks' | 'history'>('quicklinks');
+
+  React.useEffect(() => {
+    const saved = localStorage.getItem('aero_falcon_eye_history');
+    if (saved) {
+      try {
+        setHistory(JSON.parse(saved));
+      } catch (e) {
+        console.error("Failed to load history", e);
+      }
+    }
+  }, []);
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const [report, setReport] = useState<any>(null);
@@ -34,6 +55,19 @@ const FalconEye: React.FC<{ setCriticalAlert: (val: boolean) => void }> = ({ set
       const base64Data = selectedImage ? selectedImage.split(',')[1] : undefined;
       const data = await falconEyeInspection(description || "Analyze this aerospace component for defects.", base64Data);
       setReport(data);
+
+      // Save to History
+      const newRecord: AuditRecord = {
+        id: Date.now().toString(),
+        timestamp: Date.now(),
+        date: new Date().toLocaleString(),
+        description: description || 'Image Analysis',
+        report: data
+      };
+      const updatedHistory = [newRecord, ...history];
+      setHistory(updatedHistory);
+      localStorage.setItem('aero_falcon_eye_history', JSON.stringify(updatedHistory));
+
       if (data.isCritical) {
         setCriticalAlert(true);
         setNeedsAuthorization(true);
@@ -53,6 +87,20 @@ const FalconEye: React.FC<{ setCriticalAlert: (val: boolean) => void }> = ({ set
     setError(null);
     setDescription('');
     removeImage();
+  };
+
+  const loadRecord = (record: AuditRecord) => {
+    setReport(record.report);
+    setDescription(record.description);
+    setCriticalAlert(record.report.isCritical);
+    setNeedsAuthorization(record.report.isCritical);
+  };
+
+  const clearHistory = () => {
+    if (window.confirm('Delete all audit history?')) {
+      setHistory([]);
+      localStorage.removeItem('aero_falcon_eye_history');
+    }
   };
 
   return (
@@ -188,29 +236,81 @@ const FalconEye: React.FC<{ setCriticalAlert: (val: boolean) => void }> = ({ set
           )}
         </div>
 
-        {/* QUICKLINKS PANEL */}
-        <div className="glass-panel p-6 rounded-2xl h-fit border-cyber-blue/20">
-          <h3 className="text-xs font-bold text-cyber-blue uppercase tracking-widest font-tech mb-4 pb-2 border-b border-cyber-blue/10">
-            AS9100 REV D QUICKLINKS
-          </h3>
-          <ul className="space-y-3">
-            {[
-              { code: '8.7', label: 'Control of Nonconforming Outputs' },
-              { code: '10.2', label: 'Nonconformity & Corrective Action' },
-              { code: '9.1.2', label: 'Customer Satisfaction' },
-              { code: '7.5.3', label: 'Control of Documented Information' }
-            ].map((link, i) => (
-              <li key={i} className="group cursor-pointer">
-                <div className="flex items-center gap-3 p-2 rounded hover:bg-cyber-blue/5 transition-colors">
-                  <div className="w-1 h-1 bg-cyber-blue rounded-full group-hover:scale-150 group-hover:shadow-[0_0_8px_rgba(0,240,255,0.8)] transition-all" />
-                  <div>
-                    <p className="text-[10px] font-bold text-cyber-blue font-mono group-hover:text-white transition-colors">{link.code}</p>
-                    <p className="text-[10px] text-white/60 font-mono group-hover:text-cyber-blue/80 transition-colors">{link.label}</p>
+        {/* QUICKLINKS / HISTORY PANEL */}
+        <div className="glass-panel p-6 rounded-2xl h-fit border-cyber-blue/20 min-h-[300px]">
+          <div className="flex items-center justify-between mb-4 pb-2 border-b border-cyber-blue/10">
+            <h3 className="text-xs font-bold text-cyber-blue uppercase tracking-widest font-tech">
+              {viewMode === 'quicklinks' ? 'AS9100 QUICKLINKS' : 'AUDIT HISTORY'}
+            </h3>
+            <div className="flex bg-cyber-black/50 rounded-lg p-1 border border-cyber-blue/20">
+              <button
+                onClick={() => setViewMode('quicklinks')}
+                className={`p-1.5 rounded transition-all ${viewMode === 'quicklinks' ? 'bg-cyber-blue text-black shadow-neon-blue' : 'text-cyber-blue/50 hover:text-cyber-blue'}`}
+              >
+                <FileText size={14} />
+              </button>
+              <button
+                onClick={() => setViewMode('history')}
+                className={`p-1.5 rounded transition-all ${viewMode === 'history' ? 'bg-cyber-blue text-black shadow-neon-blue' : 'text-cyber-blue/50 hover:text-cyber-blue'}`}
+              >
+                <History size={14} />
+              </button>
+            </div>
+          </div>
+
+          {viewMode === 'quicklinks' ? (
+            <ul className="space-y-3 animate-in fade-in slide-in-from-right duration-300">
+              {[
+                { code: '8.7', label: 'Control of Nonconforming Outputs' },
+                { code: '10.2', label: 'Nonconformity & Corrective Action' },
+                { code: '9.1.2', label: 'Customer Satisfaction' },
+                { code: '7.5.3', label: 'Control of Documented Information' }
+              ].map((link, i) => (
+                <li key={i} className="group cursor-pointer">
+                  <div className="flex items-center gap-3 p-2 rounded hover:bg-cyber-blue/5 transition-colors">
+                    <div className="w-1 h-1 bg-cyber-blue rounded-full group-hover:scale-150 group-hover:shadow-[0_0_8px_rgba(0,240,255,0.8)] transition-all" />
+                    <div>
+                      <p className="text-[10px] font-bold text-cyber-blue font-mono group-hover:text-white transition-colors">{link.code}</p>
+                      <p className="text-[10px] text-white/60 font-mono group-hover:text-cyber-blue/80 transition-colors">{link.label}</p>
+                    </div>
                   </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="space-y-3 animate-in fade-in slide-in-from-right duration-300">
+              {history.length === 0 ? (
+                <div className="text-center py-8 text-cyber-blue/30 italic text-xs font-mono">
+                  No scan history found.
                 </div>
-              </li>
-            ))}
-          </ul>
+              ) : (
+                <>
+                  <div className="flex justify-end mb-2">
+                    <button onClick={clearHistory} className="text-[10px] text-red-500 hover:text-red-400 flex items-center gap-1">
+                      <Trash2 size={10} /> CLEAR ALL
+                    </button>
+                  </div>
+                  <div className="space-y-2 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                    {history.map((record) => (
+                      <div
+                        key={record.id}
+                        onClick={() => loadRecord(record)}
+                        className="p-3 rounded-lg border border-cyber-blue/10 bg-cyber-black/40 hover:bg-cyber-blue/10 hover:border-cyber-blue/30 cursor-pointer transition-all group"
+                      >
+                        <div className="flex justify-between items-start mb-1">
+                          <span className="text-[10px] font-mono text-cyber-blue/60">{record.date.split(',')[0]}</span>
+                          <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded border ${record.report.isCritical ? 'text-red-500 border-red-500/30' : 'text-cyber-blue border-cyber-blue/30'}`}>
+                            {record.report.isCritical ? 'CRITICAL' : 'OK'}
+                          </span>
+                        </div>
+                        <p className="text-xs text-white/80 line-clamp-2 font-mono group-hover:text-white">{record.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
         </div>
 
       </div>

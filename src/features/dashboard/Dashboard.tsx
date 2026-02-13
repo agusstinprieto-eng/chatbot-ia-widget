@@ -3,8 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { ModuleType } from '../../types';
 import { MODULES_INFO } from '../../constants';
 import {
-  ChevronRight, ExternalLink, Plane, Wrench, ShieldCheck, AlertTriangle,
-  Activity, Cpu, BarChart3, Clock, Zap, TrendingUp, Signal
+  Activity, Cpu, BarChart3, Clock, Zap, TrendingUp, Signal, Shield, Play, FileText, CheckCircle
 } from 'lucide-react';
 
 interface DashboardProps {
@@ -78,6 +77,8 @@ const Dashboard: React.FC<DashboardProps> = ({ onSelectModule }) => {
   const safetyDays = useAnimatedCounter(365, 2000);
   const compliance = useAnimatedCounter(100, 1500);
   const [showAlert, setShowAlert] = useState(false);
+  const [showAS9100, setShowAS9100] = useState(false);
+  const [showTutorials, setShowTutorials] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -137,7 +138,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onSelectModule }) => {
     <div className="max-w-7xl mx-auto py-8 space-y-8">
 
       {/* ===== HEADER BAR ===== */}
-      <div className="flex items-center justify-between animate-in fade-in slide-in-from-top duration-500">
+      <div className="flex items-center justify-between animate-in fade-in slide-in-from-top duration-500 relative z-20">
         <div>
           <h2 className="text-3xl font-extrabold text-white tracking-tight font-tech uppercase flex items-center gap-3">
             <div className="w-2 h-8 bg-cyber-blue shadow-neon-blue rounded-full" />
@@ -148,16 +149,101 @@ const Dashboard: React.FC<DashboardProps> = ({ onSelectModule }) => {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="px-4 py-2 glass-panel rounded-xl text-xs font-mono text-cyber-blue/60 flex items-center gap-2">
-            <Signal size={12} className="text-emerald-400 animate-pulse" />
-            UPLINK: ACTIVE
-          </div>
-          <div className="px-4 py-2 glass-panel rounded-xl text-xs font-mono text-cyber-blue/50">
-            {currentTime.toLocaleTimeString('en-US', { hour12: false })} UTC-6
-          </div>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => setShowAS9100(true)}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-cyber-black/50 border border-cyber-blue text-cyber-blue hover:bg-cyber-blue/10 hover:shadow-neon-blue transition-all group"
+          >
+            <Shield size={16} className="group-hover:drop-shadow-[0_0_8px_rgba(0,240,255,0.6)]" />
+            <span className="text-xs font-bold font-tech uppercase tracking-wider">NORMATIVA AS9100</span>
+          </button>
+
+          <button
+            onClick={() => setShowTutorials(true)}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-cyber-black/50 border border-emerald-500/50 text-emerald-400 hover:bg-emerald-500/10 hover:shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-all group"
+          >
+            <CheckCircle size={16} className="group-hover:drop-shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
+            <span className="text-xs font-bold font-tech uppercase tracking-wider">VER TUTORIALES</span>
+          </button>
         </div>
       </div>
+
+      {/* AS9100 MODAL */}
+      {showAS9100 && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-full max-w-4xl bg-cyber-black border border-cyber-blue rounded-2xl shadow-neon-blue p-6 relative">
+            <button onClick={() => setShowAS9100(false)} className="absolute top-4 right-4 text-cyber-blue hover:text-white"><X size={24} /></button>
+            <h3 className="text-2xl font-black text-white font-tech mb-6 flex items-center gap-3">
+              <Shield size={28} className="text-cyber-blue" /> AS9100 REV D - REFERENCE LIBRARY
+            </h3>
+            <div className="grid md:grid-cols-2 gap-6 h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+              <div className="space-y-4">
+                <div className="p-4 rounded-xl bg-cyber-blue/5 border border-cyber-blue/20">
+                  <h4 className="text-cyber-blue font-bold text-sm mb-2">Section 8.7 - Control of Nonconforming Outputs</h4>
+                  <p className="text-xs text-white/70 leading-relaxed font-mono">
+                    The organization shall ensure that outputs that do not conform to their requirements are identified and controlled to prevent their unintended use or delivery. The organization shall take appropriate action based on the nature of the nonconformity and its effect on the conformity of products and services.
+                  </p>
+                </div>
+                <div className="p-4 rounded-xl bg-cyber-blue/5 border border-cyber-blue/20">
+                  <h4 className="text-cyber-blue font-bold text-sm mb-2">Section 10.2 - Nonconformity and Corrective Action</h4>
+                  <p className="text-xs text-white/70 leading-relaxed font-mono">
+                    When a nonconformity occurs, including any arising from complaints, the organization shall react to the nonconformity and, as applicable: take action to control and correct it; deal with the consequences.
+                  </p>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div className="p-4 rounded-xl bg-cyber-blue/5 border border-cyber-blue/20">
+                  <h4 className="text-cyber-blue font-bold text-sm mb-2">Section 7.5.3 - Control of Documented Information</h4>
+                  <p className="text-xs text-white/70 leading-relaxed font-mono">
+                    Documented information required by the quality management system and by this International Standard shall be controlled to ensure: it is available and suitable for use, where and when it is needed; it is adequately protected (e.g. from loss of confidentiality, improper use, or loss of integrity).
+                  </p>
+                </div>
+                <div className="p-4 rounded-xl bg-cyber-blue/5 border border-cyber-blue/20">
+                  <h4 className="text-cyber-blue font-bold text-sm mb-2">Section 9.1.2 - Customer Satisfaction</h4>
+                  <p className="text-xs text-white/70 leading-relaxed font-mono">
+                    The organization shall monitor customers' perceptions of the degree to which their needs and expectations have been fulfilled. The organization shall determine the methods for obtaining, monitoring, and reviewing this information.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TUTORIALS MODAL */}
+      {showTutorials && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-full max-w-5xl bg-cyber-black border border-emerald-500 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.3)] p-6 relative">
+            <button onClick={() => setShowTutorials(false)} className="absolute top-4 right-4 text-emerald-500 hover:text-white"><X size={24} /></button>
+            <h3 className="text-2xl font-black text-white font-tech mb-6 flex items-center gap-3">
+              <Play size={28} className="text-emerald-500" /> TRAINING CENTER - AERO IA PRO
+            </h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                { title: 'Intro to Dashboard', duration: '3:45', thumb: 'bg-cyber-blue/20' },
+                { title: 'Using Falcon Eye', duration: '5:20', thumb: 'bg-purple-500/20' },
+                { title: 'AS9100 Compliance', duration: '8:15', thumb: 'bg-emerald-500/20' },
+                { title: 'MRO Integration', duration: '4:10', thumb: 'bg-orange-500/20' },
+                { title: 'Voice Commands', duration: '2:55', thumb: 'bg-red-500/20' },
+                { title: 'Report Generation', duration: '6:30', thumb: 'bg-blue-500/20' },
+              ].map((vid, i) => (
+                <div key={i} className="group cursor-pointer">
+                  <div className={`aspect-video rounded-xl ${vid.thumb} relative overflow-hidden mb-3 border border-white/10 group-hover:border-emerald-500 transition-colors`}>
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
+                      <div className="w-12 h-12 rounded-full bg-emerald-500/80 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                        <Play size={20} className="text-white fill-current ml-1" />
+                      </div>
+                    </div>
+                    <span className="absolute bottom-2 right-2 px-2 py-0.5 bg-black/80 text-white text-[10px] font-mono rounded">{vid.duration}</span>
+                  </div>
+                  <h4 className="text-white font-bold text-sm font-tech group-hover:text-emerald-400 transition-colors">{vid.title}</h4>
+                  <p className="text-white/40 text-[10px] font-mono uppercase tracking-wider">Video Tutorial</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ===== ROW 1: KPI CARDS ===== */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 animate-in fade-in slide-in-from-bottom duration-700">
@@ -276,6 +362,72 @@ const Dashboard: React.FC<DashboardProps> = ({ onSelectModule }) => {
           <div className="mt-4 pt-3 border-t border-cyber-blue/10 flex items-center justify-between">
             <span className="text-[9px] text-cyber-blue/20 font-mono uppercase">Latency</span>
             <span className="text-cyber-blue/50 text-[10px] font-mono font-bold">23ms</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ===== ROW 2.5: INTEGRATION ECOSYSTEM ===== */}
+      <div className="animate-in fade-in slide-in-from-bottom duration-1000" style={{ animationDelay: '300ms' }}>
+        <div className="glass-panel p-6 rounded-2xl relative overflow-hidden">
+          <div className="absolute inset-0 bg-cyber-blue/5 opacity-50" />
+
+          <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-cyber-dark rounded-lg border border-orange-500/30 text-orange-400">
+                <Database size={20} />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white font-tech tracking-wide uppercase">
+                  Integration Ecosystem
+                </h3>
+                <p className="text-[10px] text-cyber-blue/50 font-mono uppercase tracking-[0.2em]">
+                  Enterprise Data Synchronization
+                </p>
+              </div>
+            </div>
+
+            <div className="px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
+              <span className="text-[10px] font-bold text-emerald-400 font-mono uppercase tracking-wider">Synchronized</span>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {/* MRO CONNECTOR */}
+            <div className="bg-cyber-black/40 border border-cyber-blue/20 rounded-xl p-5 hover:border-emerald-500/50 transition-colors group relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-3">
+                <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+              </div>
+              <p className="text-[10px] font-mono text-emerald-400 uppercase tracking-widest mb-2">MRO Connector</p>
+              <h4 className="text-white font-bold text-sm font-tech tracking-wide mb-1">Quantum / TRAX / CAMP</h4>
+              <p className="text-[10px] text-white/40 font-mono italic group-hover:text-emerald-400/80 transition-colors">
+                Active Bidirectional Connection
+              </p>
+            </div>
+
+            {/* ERP GATEWAY */}
+            <div className="bg-cyber-black/40 border border-cyber-blue/20 rounded-xl p-5 hover:border-purple-500/50 transition-colors group relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-3">
+                <div className="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.5)]" />
+              </div>
+              <p className="text-[10px] font-mono text-purple-400 uppercase tracking-widest mb-2">ERP Gateway</p>
+              <h4 className="text-white font-bold text-sm font-tech tracking-wide mb-1">SAP Aviation Cloud</h4>
+              <p className="text-[10px] text-white/40 font-mono italic group-hover:text-purple-400/80 transition-colors">
+                BETA ACCESS Q2 2026
+              </p>
+            </div>
+
+            {/* FUTURE LINK */}
+            <div className="bg-cyber-black/40 border border-cyber-blue/20 rounded-xl p-5 hover:border-gray-500/50 transition-colors group relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-3">
+                <div className="w-2 h-2 rounded-full bg-slate-600" />
+              </div>
+              <p className="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-2">Future Link</p>
+              <h4 className="text-white font-bold text-sm font-tech tracking-wide mb-1">Oracle Cloud</h4>
+              <p className="text-[10px] text-white/40 font-mono italic group-hover:text-slate-400/80 transition-colors">
+                Roadmap Q3 2026
+              </p>
+            </div>
           </div>
         </div>
       </div>
