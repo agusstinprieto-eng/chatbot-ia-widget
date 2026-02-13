@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { decode, decodeAudioData, createPCM16kBlob } from '../utils/audioUtils';
 import { X, Mic, PhoneOff, Activity, ShieldAlert, Cpu } from 'lucide-react';
+import { supabase } from '../../lib/supabaseClient';
 
 interface LiveVoiceCallProps {
     isOpen: boolean;
@@ -131,22 +132,17 @@ const LiveVoiceCall: React.FC<LiveVoiceCallProps> = ({ isOpen, onClose, systemIn
                 if (event.results[event.results.length - 1].isFinal) {
                     setIsModelSpeaking(true);
                     try {
-                        const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/aero-ai`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
-                            },
-                            body: JSON.stringify({
+                        const { data, error } = await supabase.functions.invoke('aero-ai', {
+                            body: {
                                 action: 'live-voice-audio',
                                 payload: {
                                     text: transcript,
                                     sessionId: 'voice-session'
                                 }
-                            })
+                            }
                         });
 
-                        const data = await response.json();
+                        if (error) throw error;
                         const aiResponse = data.result;
                         setTranscription(prev => ({ ...prev, model: aiResponse }));
 
