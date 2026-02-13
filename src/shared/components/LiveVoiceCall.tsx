@@ -86,16 +86,13 @@ const LiveVoiceCall: React.FC<LiveVoiceCallProps> = ({ isOpen, onClose, systemIn
         setError(null);
         setIsConnecting(true);
         try {
-            // Note: Gemini Live requires a secure connection via Edge Functions or Backend proxy.
-            // Direct client-side keys are deprecated for security.
-
-            audioContextInRef.current = new AudioContext({ sampleRate: 16000 });
-            audioContextOutRef.current = new AudioContext({ sampleRate: 24000 });
-            analyserRef.current = audioContextOutRef.current.createAnalyser();
-            streamRef.current = await navigator.mediaDevices.getUserMedia({ audio: true });
-
-            // Simulated connection for structure - In production, replace with real Gemini Live connect
-            setIsActive(true);
+            // Gemini Live API requires WebSocket connection
+            // For now, showing informative message to user
+            setError(
+                language === 'es'
+                    ? "Gemini Live API requiere configuración adicional. Por favor contacta al administrador para habilitar esta función."
+                    : "Gemini Live API requires additional setup. Please contact administrator to enable this feature."
+            );
             setIsConnecting(false);
         } catch (err: any) {
             setError(err.message);
