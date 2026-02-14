@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { ModuleType } from '../../types';
 import { MODULES_INFO } from '../../constants';
 import {
-  Activity, Cpu, BarChart3, Clock, Zap, TrendingUp, Signal, Shield, Play, FileText, CheckCircle
+  Activity, Cpu, BarChart3, Clock, Zap, TrendingUp, Signal, Shield, Play, FileText, CheckCircle,
+  Plane, ChevronRight, AlertTriangle, ShieldCheck, Wrench, ExternalLink
 } from 'lucide-react';
 
 interface DashboardProps {
