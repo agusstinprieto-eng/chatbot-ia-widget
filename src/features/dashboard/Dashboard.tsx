@@ -4,7 +4,7 @@ import { ModuleType } from '../../types';
 import { MODULES_INFO } from '../../constants';
 import {
   Activity, Cpu, BarChart3, Clock, Zap, TrendingUp, Signal, Shield, Play, FileText, CheckCircle,
-  Plane, ChevronRight, AlertTriangle, ShieldCheck, Wrench, ExternalLink
+  Plane, ChevronRight, AlertTriangle, ShieldCheck, Wrench, ExternalLink, Database
 } from 'lucide-react';
 
 interface DashboardProps {
