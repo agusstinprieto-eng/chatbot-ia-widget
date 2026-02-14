@@ -42,11 +42,15 @@ const GlobalIntelligenceView: React.FC = () => {
     const [activeTab, setActiveTab] = useState<'market' | 'regional'>('market');
     const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
 
-    // Mock Data for Regional Comparison
+    // Mock Data for Regional Comparison - FEB 2026 (Source: Market Reports - User Provided - Annualized)
     const regionalData = [
-        { name: 'Baja California', rent: 7.50, labor: 3.50, energy: 0.11, logistics: 9.5, color: '#00f0ff' }, // High proximity
-        { name: 'Nuevo León', rent: 8.20, labor: 4.00, energy: 0.10, logistics: 8.8, color: '#ff00aa' }, // Industrial hub
-        { name: 'Querétaro', rent: 6.80, labor: 3.20, energy: 0.12, logistics: 8.2, color: '#7000ff' }, // Central hub
+        // Rents based on Q4 2025/Jan 2026 data. Labor = Burdened Avg.
+        // Baja: Rent $0.80-0.90 ($9.72 Annual), Labor $4.80-6.00 (Avg ~$5.40)
+        { name: 'Baja California', rent: 9.72, labor: 5.40, energy: 0.14, logistics: 9.8, color: '#00f0ff' },
+        // NL: Rent $0.65-0.78 ($8.40 Annual), Labor $5.00-6.50 (Avg ~$5.75 - Skilled)
+        { name: 'Nuevo León', rent: 8.40, labor: 5.75, energy: 0.12, logistics: 9.2, color: '#ff00aa' },
+        // Qro: Rent $0.55-0.65 ($6.72 Annual), Labor $4.50-5.80 (Avg ~$5.15)
+        { name: 'Querétaro', rent: 6.72, labor: 5.15, energy: 0.13, logistics: 8.8, color: '#7000ff' },
     ];
 
     useEffect(() => {
@@ -384,8 +388,8 @@ const GlobalIntelligenceView: React.FC = () => {
                                         contentStyle={{ backgroundColor: '#13131f', border: '1px solid #00f0ff', borderRadius: '12px', color: '#fff' }}
                                     />
                                     <Legend wrapperStyle={{ paddingTop: '20px' }} />
-                                    <Bar dataKey="rent" name="Ind. Rent ($/sqft)" fill="#00f0ff" radius={[4, 4, 0, 0]} barSize={40} />
-                                    <Bar dataKey="labor" name="Dir. Labor ($/hr)" fill="#ff00aa" radius={[4, 4, 0, 0]} barSize={40} />
+                                    <Bar dataKey="rent" name="Ind. Rent ($/sqft/Yr)" fill="#00f0ff" radius={[4, 4, 0, 0]} barSize={40} />
+                                    <Bar dataKey="labor" name="Dir. Labor ($/hr - Burdened)" fill="#ff00aa" radius={[4, 4, 0, 0]} barSize={40} />
                                 </BarChart>
                             </ResponsiveContainer>
                         </div>
@@ -400,8 +404,8 @@ const GlobalIntelligenceView: React.FC = () => {
                                     </div>
                                     <div className="space-y-2 text-sm text-zinc-400">
                                         <div className="flex justify-between">
-                                            <span>Industrial Rent:</span>
-                                            <span className="text-white font-mono">${region.rent.toFixed(2)} USD/sqft</span>
+                                            <span>Industrial Rent (Annual):</span>
+                                            <span className="text-white font-mono">${region.rent.toFixed(2)} USD/sqft/yr</span>
                                         </div>
                                         <div className="flex justify-between">
                                             <span>Direct Labor:</span>
@@ -437,33 +441,33 @@ const GlobalIntelligenceView: React.FC = () => {
                         </div>
                         <div className="grid md:grid-cols-3 gap-6">
                             <div className="p-4 bg-white/5 rounded-xl border border-white/5">
-                                <h4 className="text-cyber-blue font-bold mb-2">Baja California</h4>
+                                <h4 className="text-cyber-blue font-bold mb-2">Baja California (Feb 2026)</h4>
                                 <p className="text-xs text-zinc-400 leading-relaxed mb-3">
-                                    Highest proximity to California aerospace corridor. Ideal for high-mix, low-volume production and MRO services due to logistics speed.
+                                    <strong>Price Leader:</strong> Annual Rent avg ~$9.72/sqft/yr due to extreme demand (Vacancy &lt;3%). Labor costs rising ($5.40 avg) driven by border wage competition.
                                 </p>
                                 <ul className="text-[10px] text-zinc-500 space-y-1 font-mono uppercase">
-                                    <li>• Major Hubs: Tijuana, Mexicali</li>
-                                    <li>• Key Players: Honeywell, Safran</li>
+                                    <li>• Rent: $9.60 - 10.80 USD/sqft/Yr</li>
+                                    <li>• Labor: Entry ~$5.20 / Skilled ~$6.00+</li>
                                 </ul>
                             </div>
                             <div className="p-4 bg-white/5 rounded-xl border border-white/5">
-                                <h4 className="text-pink-500 font-bold mb-2">Nuevo León</h4>
+                                <h4 className="text-pink-500 font-bold mb-2">Nuevo León (Feb 2026)</h4>
                                 <p className="text-xs text-zinc-400 leading-relaxed mb-3">
-                                    Industrial powerhouse with access to Texas market. Best for large-scale manufacturing and heavy machining operations.
+                                    <strong>Stable but Pressured:</strong> Annual Rent avg $8.40. Labor ($5.75 avg) is highest for skilled roles due to automotive/aero competition. Vacancy ~6%.
                                 </p>
                                 <ul className="text-[10px] text-zinc-500 space-y-1 font-mono uppercase">
-                                    <li>• Major Hubs: Monterrey</li>
-                                    <li>• Key Players: Kawasaki</li>
+                                    <li>• Rent: $7.80 - 9.36 USD/sqft/Yr</li>
+                                    <li>• Labor: Skilled Operators ~$5.70 - 6.50</li>
                                 </ul>
                             </div>
                             <div className="p-4 bg-white/5 rounded-xl border border-white/5">
-                                <h4 className="text-purple-500 font-bold mb-2">Querétaro</h4>
+                                <h4 className="text-purple-500 font-bold mb-2">Querétaro (Feb 2026)</h4>
                                 <p className="text-xs text-zinc-400 leading-relaxed mb-3">
-                                    Specialized aerospace cluster (centrally located). Highest concentration of specialized engineer talent and R&D centers.
+                                    <strong>Competitive Advantage:</strong> Most affordable rent ($6.72 avg annual). Labor ($5.15 avg) focused on high-specialization. Ideal for R&D/Engineers.
                                 </p>
                                 <ul className="text-[10px] text-zinc-500 space-y-1 font-mono uppercase">
-                                    <li>• Major Hubs: Querétaro City</li>
-                                    <li>• Key Players: Bombardier, Airbus</li>
+                                    <li>• Rent: $6.60 - 7.80 USD/sqft/Yr</li>
+                                    <li>• Labor: Specialized ~$5.40 average</li>
                                 </ul>
                             </div>
                         </div>
