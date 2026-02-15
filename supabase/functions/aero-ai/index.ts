@@ -23,14 +23,14 @@ Deno.serve(async (req) => {
 
         const genAI = new GoogleGenerativeAI(apiKey);
         const model = genAI.getGenerativeModel({
-            model: "gemini-2.0-flash",
+            model: "gemini-2.5-flash",
             generationConfig: { temperature: 0.1, topP: 1.0, topK: 1 }
         });
 
         if (action === "mro-expert") {
             const { query } = payload || {};
             const mroModel = genAI.getGenerativeModel({
-                model: "gemini-2.0-flash",
+                model: "gemini-2.5-flash",
                 generationConfig: { responseMimeType: "application/json" },
                 systemInstruction: `You are the MRO Expert module of AERO-IA-PRO. 
           Respond with zero ambiguity. 
@@ -54,7 +54,7 @@ Deno.serve(async (req) => {
         if (action === "falcon-eye") {
             const { description, imageBase64 } = payload || {};
             const visionModel = genAI.getGenerativeModel({
-                model: "gemini-2.0-flash",
+                model: "gemini-2.5-flash",
                 generationConfig: { responseMimeType: "application/json" },
                 systemInstruction: `Analyze visual defects for aerospace components acting as an AS9100 Rev D Quality Auditor. 
           1. Classify the defect.
@@ -216,7 +216,7 @@ Deno.serve(async (req) => {
 
             // Gemini Live API configuration
             const liveModel = genAI.getGenerativeModel({
-                model: "gemini-2.0-flash-exp",
+                model: "gemini-2.5-flash",
                 systemInstruction: systemInstruction || `You are the Aero AI voice assistant for aerospace operations. 
                 Respond concisely and professionally. 
                 Language: ${language === 'es' ? 'Spanish' : 'English'}.`
