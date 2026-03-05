@@ -31,6 +31,8 @@ const LiveVoiceCall: React.FC<LiveVoiceCallProps> = ({ isOpen, onClose, systemIn
     const analyserRef = useRef<AnalyserNode | null>(null);
     const sourcesRef = useRef<Set<AudioBufferSourceNode>>(new Set());
     const nextStartTimeRef = useRef<number>(0);
+    const isSocketReadyRef = useRef<boolean>(false);
+    const isActiveRef = useRef<boolean>(false);
 
     const MAX_DURATION_PER_CALL = 600; // 10 Minutes per call
 
@@ -106,6 +108,8 @@ const LiveVoiceCall: React.FC<LiveVoiceCallProps> = ({ isOpen, onClose, systemIn
         }
 
         setIsActive(false);
+        isActiveRef.current = false;
+        isSocketReadyRef.current = false;
         setIsConnecting(false);
         setIsModelSpeaking(false);
         setVolume(0);
@@ -168,6 +172,8 @@ const LiveVoiceCall: React.FC<LiveVoiceCallProps> = ({ isOpen, onClose, systemIn
                 callbacks: {
                     onopen: () => {
                         setIsActive(true);
+                        isActiveRef.current = true;
+                        isSocketReadyRef.current = true;
                         setIsConnecting(false);
 
                         const source = audioContextInRef.current!.createMediaStreamSource(streamRef.current!);
@@ -175,7 +181,7 @@ const LiveVoiceCall: React.FC<LiveVoiceCallProps> = ({ isOpen, onClose, systemIn
 
                         processorRef.current.onaudioprocess = (e) => {
                             try {
-                                if (!audioContextInRef.current || !sessionRef.current) return;
+                                if (!audioContextInRef.current || !sessionRef.current || !isSocketReadyRef.current) return;
                                 const inputData = e.inputBuffer.getChannelData(0);
                                 const pcmBlob = createPCM16kBlob(inputData, audioContextInRef.current.sampleRate);
                                 sessionRef.current.sendRealtimeInput({ media: pcmBlob });
