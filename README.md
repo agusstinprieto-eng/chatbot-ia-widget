@@ -1,20 +1,63 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# ✈️ Aero IA Pro
+> **Plataforma de Gestión Aeroespacial Impulsada por IA**
 
-# Run and deploy your AI Studio app
+[![AI Architecture](https://img.shields.io/badge/AI-Gemini%202.0-blue?style=for-the-badge&logo=google)](https://deepmind.google/technologies/gemini/)
+[![Tech Stack](https://img.shields.io/badge/Tech-React%20%2B%20Vite-blue?style=for-the-badge&logo=react)](https://react.dev)
+[![Supabase](https://img.shields.io/badge/Infra-Supabase-emerald?style=for-the-badge&logo=supabase)](https://supabase.com)
 
-This contains everything you need to run your app locally.
+---
 
-View your app in AI Studio: https://ai.studio/apps/drive/19WQYqhlGRw3hDVjBqZjMUDy2LlGvDHP3
+## 💎 Visión
+**Aero IA Pro** es la plataforma de gestión aeroespacial de próxima generación. Diseñada para optimizar operaciones de aeropuertos, aerolíneas y empresas de aviación, combina IA avanzada para mejorar eficiencia operativa, seguridad y experiencia del pasajero.
 
-## Run Locally
+## ✨ Características Clave
+- **🛫 Optimización de Operaciones**: Programación inteligente de vuelos y recursos.
+- **📊 Análisis de Tráfico**: Predicción y análisis de flujos de pasajeros y aeronaves.
+- **🔧 Mantenimiento Predictivo**: Detección de fallas potenciales en flota aérea.
+- **👥 Experiencia del Pasajero**: Asistentes IA para check-in, información de vuelos y soporte.
+- **⚠️ Gestión de Incidencias**: Respuesta rápida y coordinación ante contingencias.
+- **📈 Reportes de Desempeño**: KPIs operativos y análisis de eficiencia.
 
-**Prerequisites:**  Node.js
+## 🛠️ Tech Stack
+- **Frontend**: React + Vite + TypeScript
+- **Styling**: TailwindCSS con tema "Cyber-Aerospace"
+- **Backend**: Supabase (PostgreSQL + Auth + Edge Functions + Storage)
+- **AI**: Gemini 2.0 Flash (Multimodal)
+- **Animaciones**: Framer Motion para micro-interacciones premium
 
+## 🚀 Quick Start
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+```bash
+# Instalar dependencias
+npm install
+
+# Configurar entorno
+# Crear .env.local con tus claves de Supabase y AI
+
+# Ejecutar en desarrollo
+npm run dev
+
+# Construir para producción
+npm run build
+```
+
+---
+
+## 🔐 Seguridad & Enterprise
+- Arquitectura multi-tenant con RLS (Row Level Security)
+- Cumplimiento de normativas aeronauticas y de seguridad
+- Protocolo de seguridad Neural Shield para protección de datos operativos
+
+---
+
+## 📈 Roadmap
+- [ ] Integración con sistemas de control de tráfico aéreo
+- [ ] Optimización de rutas con IA
+- [x] Dashboard de operaciones
+- [x] Mantenimiento predictivo
+- [x] Gestión de pasajeros
+
+---
+
+Desarrollado con ❤️ por **[IA.AGUS](https://www.ia-agus.com)**
+*Revolucionando la industria aeroespacial a través de Intelligent Automation.*
