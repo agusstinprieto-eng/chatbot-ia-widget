@@ -9,6 +9,7 @@ export enum ModuleType {
     AI_ANALYST = 'AI_ANALYST',
     VIRTUAL_TRAINER = 'VIRTUAL_TRAINER',
     SETTINGS = 'SETTINGS',
+    VOICE_LINK = 'VOICE_LINK',
 }
 
 export interface InspectionData {

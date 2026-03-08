@@ -58,10 +58,12 @@ export function downsampleTo16k(buffer: Float32Array, inputSampleRate: number): 
     return result;
 }
 
-export function createPCM16kBlob(data: Float32Array, inputSampleRate: number): { data: string; mimeType: string } {
+export function createBlob(data: Float32Array, inputSampleRate: number = 16000): { data: string; mimeType: string } {
     const int16 = downsampleTo16k(data, inputSampleRate);
     return {
         data: encode(new Uint8Array(int16.buffer)),
         mimeType: 'audio/pcm;rate=16000',
     };
 }
+
+export const createPCM16kBlob = createBlob;

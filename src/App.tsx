@@ -9,6 +9,7 @@ import CostingView from './features/costing/CostingView';
 import ReportChat from './shared/components/ReportChat';
 import VirtualTrainer from './features/virtual-trainer/VirtualTrainer';
 import SettingsView from './features/settings/SettingsView';
+import { VoiceLinkView } from './shared/components/VoiceLinkView';
 import { ModuleType } from './types';
 
 import { useAuth } from './contexts/AuthContext';
@@ -50,6 +51,8 @@ const App: React.FC = () => {
         return <VirtualTrainer />;
       case ModuleType.SETTINGS:
         return <SettingsView />;
+      case ModuleType.VOICE_LINK:
+        return <VoiceLinkView />;
       default:
         return <Dashboard onSelectModule={setActiveModule} />;
     }

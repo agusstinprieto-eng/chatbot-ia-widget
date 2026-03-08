@@ -19,6 +19,7 @@ export const translations: Translations = {
     'nav.aero_analyst': { es: 'Aero Analyst', en: 'Aero Analyst' },
     'nav.virtual_trainer': { es: 'Virtual Trainer', en: 'Virtual Trainer' },
     'nav.settings': { es: 'Configuración', en: 'Settings' },
+    'nav.voice_link': { es: 'Enlace de Voz', en: 'Voice Link' },
     'nav.operator_exit': { es: 'Operator Exit', en: 'Operator Exit' },
 
     // Header

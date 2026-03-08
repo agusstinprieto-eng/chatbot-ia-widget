@@ -11,7 +11,8 @@ import {
   Calculator,
   Sparkles,
   GraduationCap,
-  Plane
+  Plane,
+  Phone
 } from 'lucide-react';
 import { ModuleType } from '../../types';
 import ReportChat from './ReportChat';
@@ -44,6 +45,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activeModule, onNavigate, isC
     { id: ModuleType.AI_ANALYST, icon: <Sparkles />, label: t('nav.aero_analyst') },
     { id: ModuleType.VIRTUAL_TRAINER, icon: <GraduationCap />, label: t('nav.virtual_trainer') },
     { id: ModuleType.SETTINGS, icon: <Settings />, label: t('nav.settings') },
+    { id: ModuleType.VOICE_LINK, icon: <Phone />, label: t('nav.voice_link') },
   ];
 
   return (

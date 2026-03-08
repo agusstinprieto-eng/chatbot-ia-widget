@@ -130,3 +130,32 @@ export const startVirtualTraining = async (
     throw new Error("Failed to start training session. Connection to AI Core disrupted.");
   }
 };
+
+// AGUS PRO: Sistema de Seguridad Centralizado
+const keyCache: Record<string, string> = {};
+
+export const getSecureKey = async (keyName: string): Promise<string | null> => {
+  if (keyCache[keyName]) return keyCache[keyName];
+
+  try {
+    const { data, error } = await supabase
+      .from('app_configs')
+      .select('config_value')
+      .eq('config_key', keyName)
+      .single();
+
+    if (error) {
+      console.warn(`[Security] Key ${keyName} not found in Supabase:`, error);
+      return null;
+    }
+
+    if (data?.config_value) {
+      keyCache[keyName] = data.config_value;
+      return data.config_value;
+    }
+    return null;
+  } catch (err) {
+    console.error(`[Security] Error fetching ${keyName}:`, err);
+    return null;
+  }
+};
