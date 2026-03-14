@@ -62,9 +62,7 @@ const SettingsView: React.FC = () => {
                         <div>
                             <label className="block text-[10px] text-cyber-blue/50 uppercase font-mono mb-2">Modelo Activo</label>
                             <select className="w-full bg-black border border-cyber-blue/20 rounded-lg px-4 py-2.5 text-white font-mono text-sm focus:border-cyber-blue outline-none cursor-pointer">
-                                <option className="bg-black text-white">gemini-2.0-flash</option>
-                                <option className="bg-black text-white">gemini-1.5-pro-latest</option>
-                                <option className="bg-black text-white">gemini-1.5-flash-latest</option>
+                                <option className="bg-black text-white">gemini-2.5-flash-lite</option>
                             </select>
                         </div>
                     </div>
