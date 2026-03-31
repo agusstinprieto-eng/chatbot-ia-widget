@@ -388,7 +388,7 @@ const ReportChat: React.FC<ReportChatProps> = ({ analysisContext, language }) =>
                             <Search size={32} className="text-cyber-blue" />
                         </div>
                         <p className="text-xs font-mono uppercase tracking-[0.2em] text-cyber-blue max-w-xs">
-                            Establish communication link to start analysis...
+                            {language === 'es' ? 'Hola, soy el agente de soporte de IA.AGUS. Estoy disponible 24/7.' : 'Establish communication link to start analysis...'}
                         </p>
                     </div>
                 )}
@@ -490,7 +490,9 @@ const ReportChat: React.FC<ReportChatProps> = ({ analysisContext, language }) =>
                             {isGroundingEnabled ? 'WEB_LINK_ACTIVE' : 'WEB_LINK_IDLE'}
                         </div>
                     </div>
-                    <span className="text-[8px] font-mono text-cyber-blue/20 uppercase tracking-widest">v0.8.6 // IA.AGUS</span>
+                    <span className="text-[8px] font-mono text-cyber-blue/20 uppercase tracking-widest">
+                        Gemini 2.5 Flash-Lite • IA.AGUS Enterprise Solutions
+                    </span>
                 </div>
             </div>
 

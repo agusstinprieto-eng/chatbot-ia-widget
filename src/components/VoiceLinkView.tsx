@@ -161,7 +161,7 @@ export const VoiceLinkView: React.FC<VoiceLinkViewProps> = ({
             streamRef.current = await navigator.mediaDevices.getUserMedia({ audio: true });
 
             const sessionPromise = ai.live.connect({
-                model: 'gemini-2.5-flash-native-audio-preview-12-2025',
+                model: 'gemini-2.5-flash-lite-native-audio-preview-12-2025',
                 config: {
                     responseModalities: [Modality.AUDIO],
                     speechConfig: {

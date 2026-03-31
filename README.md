@@ -22,7 +22,7 @@
 - **Frontend**: React + Vite + TypeScript
 - **Styling**: TailwindCSS con tema "Cyber-Aerospace"
 - **Backend**: Supabase (PostgreSQL + Auth + Edge Functions + Storage)
-- **AI**: Gemini 2.0 Flash (Multimodal)
+- **AI**: Gemini 2.5 Flash (Multimodal)
 - **Animaciones**: Framer Motion para micro-interacciones premium
 
 ## 🚀 Quick Start

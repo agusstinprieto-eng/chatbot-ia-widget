@@ -1,188 +1,177 @@
 
+/**
+ * 🔒 SECURE AUTH CONTEXT - Aero IA Pro
+ *
+ * Implements secure authentication without hardcoded credentials.
+ * Uses Supabase Auth with database-backed roles.
+ */
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { User as SupabaseUser, Session } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabaseClient';
 
-export type UserRole = 'admin' | 'engineer' | 'manager' | 'operator';
+export type UserRole = 'admin' | 'engineer' | 'manager' | 'operator' | 'user';
 
-interface User {
-    id: string;
-    email: string;
-    name: string;
-    role: UserRole;
-    company: string;
-    analysisLimit?: number;
-    supportMinutes?: number;
-    isUnlimited?: boolean;
+interface UserProfile {
+  id: string;
+  email: string;
+  role: UserRole;
+  company?: string;
 }
 
 interface AuthContextType {
-    user: User | null;
-    isAuthenticated: boolean;
-    login: (email: string, password: string) => Promise<boolean>;
-    logout: () => void;
-    analysisCount: number;
-    remainingAnalyses: number;
-    incrementAnalysis: () => boolean;
-    isDemoExpired: boolean;
+  user: SupabaseUser | null;
+  profile: UserProfile | null;
+  session: Session | null;
+  isLoading: boolean;
+  isAdmin: boolean;
+  signIn: (email: string, password: string) => Promise<{ error: any | null }>;
+  signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Static credentials for Aero IA Pro
-const DEMO_USERS: Record<string, { password: string; user: User }> = {
-    'aero': {
-        password: 'demo',
-        user: {
-            id: 'aero-demo-id',
-            email: 'aero',
-            name: 'Aero Demo User',
-            role: 'manager',
-            company: 'Aero Aerospace Cluster',
-            analysisLimit: 10,
-            supportMinutes: 15
-        }
-    },
-    'agus': {
-        password: 'godmode',
-        user: {
-            id: 'agus-god-id',
-            email: 'agus',
-            name: 'Agustín Prieto',
-            role: 'admin',
-            company: 'IA.AGUS',
-            isUnlimited: true
-        }
-    },
-    'tomas': {
-        password: 'Sibaja',
-        user: {
-            id: 'tomas-sibaja-id',
-            email: 'tomas',
-            name: 'Tomas Sibaja',
-            role: 'manager',
-            company: 'Aero Aerospace',
-            analysisLimit: 50,
-            supportMinutes: 60
-        }
-    }
+// Rate limiting config
+const RATE_LIMIT = {
+  maxAttempts: 5,
+  windowMs: 15 * 60 * 1000, // 15 minutes
 };
 
+let loginAttempts: { timestamp: number; email: string }[] = [];
+
+function checkRateLimit(email: string): { allowed: boolean; retryAfter?: number } {
+  const now = Date.now();
+  loginAttempts = loginAttempts.filter(a => now - a.timestamp < RATE_LIMIT.windowMs);
+
+  const emailAttempts = loginAttempts.filter(a => a.email === email).length;
+  if (emailAttempts >= RATE_LIMIT.maxAttempts) {
+    const oldest = loginAttempts.find(a => a.email === email);
+    if (oldest) {
+      const retryAfter = Math.ceil((RATE_LIMIT.windowMs - (now - oldest.timestamp)) / 1000);
+      return { allowed: false, retryAfter };
+    }
+  }
+  return { allowed: true };
+}
+
+function recordLoginAttempt(email: string) {
+  loginAttempts.push({ timestamp: Date.now(), email });
+}
+
+function clearLoginAttempts(email: string) {
+  loginAttempts = loginAttempts.filter(a => a.email !== email);
+}
+
+async function fetchUserProfile(userId: string): Promise<UserProfile | null> {
+  try {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('id, email, role')
+      .eq('id', userId)
+      .single();
+
+    if (error) return null;
+    return data;
+  } catch {
+    return null;
+  }
+}
+
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [user, setUser] = useState<User | null>(null);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [analysisCount, setAnalysisCount] = useState(0);
-    const [demoStartTime, setDemoStartTime] = useState<number | null>(null);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-    const MAX_ANALYSES = user?.analysisLimit || 5;
-    const DEMO_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
 
-    useEffect(() => {
-        const storedUser = localStorage.getItem('aero-ia-user');
-        const storedCount = localStorage.getItem('aero-ia-analysis-count');
-        const storedStart = localStorage.getItem('aero-ia-demo-start');
+      if (session?.user) {
+        fetchUserProfile(session.user.id).then(setProfile);
+      }
 
-        if (storedUser) {
-            try {
-                const userData = JSON.parse(storedUser);
-                setUser(userData);
-                setIsAuthenticated(true);
-            } catch (e) {
-                localStorage.removeItem('aero-ia-user');
-            }
-        }
+      setIsLoading(false);
+    });
 
-        if (storedCount) setAnalysisCount(parseInt(storedCount, 10));
-        if (storedStart) setDemoStartTime(parseInt(storedStart, 10));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
 
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-            if (event === 'SIGNED_IN' && session) {
-                const newUser: User = {
-                    id: session.user.id,
-                    email: session.user.email || '',
-                    name: session.user.user_metadata?.full_name || session.user.email || 'User',
-                    role: session.user.user_metadata?.role as UserRole || 'manager',
-                    company: session.user.user_metadata?.company || 'Organization',
-                    analysisLimit: session.user.user_metadata?.analysisLimit,
-                    supportMinutes: session.user.user_metadata?.supportMinutes
-                };
-                setUser(newUser);
-                setIsAuthenticated(true);
-                localStorage.setItem('aero-ia-user', JSON.stringify(newUser));
-            } else if (event === 'SIGNED_OUT') {
-                setUser(null);
-                setIsAuthenticated(false);
-                localStorage.removeItem('aero-ia-user');
-            }
-        });
+      if (session?.user) {
+        const userProfile = await fetchUserProfile(session.user.id);
+        setProfile(userProfile);
+      } else {
+        setProfile(null);
+      }
 
-        return () => subscription.unsubscribe();
-    }, []);
+      setIsLoading(false);
+    });
 
-    const login = async (email: string, password: string): Promise<boolean> => {
-        const normalizedEmail = email.toLowerCase().trim();
-        const demoUser = DEMO_USERS[normalizedEmail];
+    return () => subscription.unsubscribe();
+  }, []);
 
-        if (demoUser && demoUser.password === password) {
-            await new Promise(r => setTimeout(r, 600)); // Sim delay
-            setUser(demoUser.user);
-            setIsAuthenticated(true);
-            localStorage.setItem('aero-ia-user', JSON.stringify(demoUser.user));
+  const signIn = async (email: string, password: string): Promise<{ error: any | null }> => {
+    try {
+      const rateLimit = checkRateLimit(email);
+      if (!rateLimit.allowed) {
+        return {
+          error: {
+            message: `Demasiados intentos. Intenta en ${Math.ceil(rateLimit.retryAfter! / 60)} min.`,
+          },
+        };
+      }
 
-            if (!localStorage.getItem('aero-ia-demo-start')) {
-                const now = Date.now();
-                setDemoStartTime(now);
-                localStorage.setItem('aero-ia-demo-start', now.toString());
-            }
-            return true;
-        }
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.toLowerCase().trim(),
+        password,
+      });
 
-        try {
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) return false;
-            return !!data.user;
-        } catch (e) {
-            return false;
-        }
-    };
+      if (error) {
+        recordLoginAttempt(email);
+        return { error };
+      }
 
-    const logout = async () => {
-        setUser(null);
-        setIsAuthenticated(false);
-        localStorage.removeItem('aero-ia-user');
-        await supabase.auth.signOut();
-    };
+      clearLoginAttempts(email);
 
-    const incrementAnalysis = (): boolean => {
-        if (user?.isUnlimited) return true;
-        if (isDemoExpired) return false;
-        if (analysisCount >= MAX_ANALYSES) return false;
+      if (data.user) {
+        const userProfile = await fetchUserProfile(data.user.id);
+        setProfile(userProfile);
+      }
 
-        const nextCount = analysisCount + 1;
-        setAnalysisCount(nextCount);
-        localStorage.setItem('aero-ia-analysis-count', nextCount.toString());
-        return true;
-    };
+      return { error: null };
+    } catch (error) {
+      return { error };
+    }
+  };
 
-    const isDemoExpired = !!(demoStartTime && (Date.now() - demoStartTime > DEMO_DURATION_MS));
+  const signOut = async () => {
+    setUser(null);
+    setProfile(null);
+    setSession(null);
+    await supabase.auth.signOut();
+  };
 
-    return (
-        <AuthContext.Provider value={{
-            user,
-            isAuthenticated,
-            login,
-            logout,
-            analysisCount,
-            remainingAnalyses: Math.max(0, MAX_ANALYSES - analysisCount),
-            incrementAnalysis,
-            isDemoExpired
-        }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  const isAdmin = profile?.role === 'admin';
+
+  return (
+    <AuthContext.Provider value={{
+      user,
+      profile,
+      session,
+      isLoading,
+      isAdmin,
+      signIn,
+      signOut,
+    }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => {
-    const context = useContext(AuthContext);
-    if (!context) throw new Error('useAuth must be used within AuthProvider');
-    return context;
+  const context = useContext(AuthContext);
+  if (!context) throw new Error('useAuth must be used within AuthProvider');
+  return context;
 };

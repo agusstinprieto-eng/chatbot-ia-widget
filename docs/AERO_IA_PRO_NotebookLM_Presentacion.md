@@ -10,7 +10,7 @@ Mira, lo que tenemos aquí no es otro software genérico de "inteligencia artifi
 
 El sistema opera bajo el estándar AS9100 Rev D como cimiento. Toda respuesta, toda inspección, todo cálculo de costos pasa por ese filtro. No estamos hablando de un ChatGPT con un logo bonito — estamos hablando de un SISTEMA DETERMINISTA que habla el idioma de la planta, del hangar, y del taller.
 
-El motor de IA es Google Gemini 2.0 Flash — multimodal: procesa texto, imágenes Y video. Para el chat de voz en tiempo real usamos Gemini 2.5 Flash Native Audio. La arquitectura es serverless con Supabase Edge Functions. Despliegue global en Vercel. Esto significa: escala automáticamente, costo operativo mínimo, y cero infraestructura on-premise que mantener.
+El motor de IA es Google Gemini 2.5 Flash — multimodal: procesa texto, imágenes Y video. Para el chat de voz en tiempo real usamos Gemini 2.5 Flash Native Audio. La arquitectura es serverless con Supabase Edge Functions. Despliegue global en Vercel. Esto significa: escala automáticamente, costo operativo mínimo, y cero infraestructura on-premise que mantener.
 
 ---
 
@@ -153,7 +153,7 @@ Para usuarios expertos, cita cláusulas específicas de AS9100. Para principiant
 |---|---|---|
 | Frontend | React 19 + TypeScript | Rendimiento, tipado fuerte, sin bugs silenciosos |
 | Estilos | Tailwind CSS 4 | Rápido, consistente, responsive sin CSS duplicado |
-| Motor de IA | Google Gemini 2.0 Flash | Multimodal verdadero: texto + visión + audio |
+| Motor de IA | Google Gemini 2.5 Flash | Multimodal verdadero: texto + visión + audio |
 | Voz en vivo | Gemini 2.5 Flash Native Audio | Audio bidireccional con latencia de menos de 2 segundos |
 | Backend | Supabase Edge Functions (Deno) | Serverless — solo pagas por lo que usas |
 | Base de datos | Supabase PostgreSQL | Relacional, Row Level Security, realtime |
