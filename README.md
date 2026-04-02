@@ -1,13 +1,22 @@
+<<<<<<< HEAD
 # ✈️ Aero IA Pro
 > **Plataforma de Gestión Aeroespacial Impulsada por IA**
 
 [![AI Architecture](https://img.shields.io/badge/AI-Gemini%202.0-blue?style=for-the-badge&logo=google)](https://deepmind.google/technologies/gemini/)
 [![Tech Stack](https://img.shields.io/badge/Tech-React%20%2B%20Vite-blue?style=for-the-badge&logo=react)](https://react.dev)
+=======
+# ✈️ IA.AGUS Aero
+> **Plataforma de Gestión Aeroespacial Impulsada por IA**
+
+[![AI Architecture](https://img.shields.io/badge/AI-Gemini%202.0-blue?style=for-the-badge&logo=google)](https://deepmind.google/technologies/gemini/)
+[![Tech Stack](https://img.shields.io/badge/Tech-Next.js-blue?style=for-the-badge&logo=next.js)](https://nextjs.org)
+>>>>>>> 5acfb2a (AGUS PRO: Automated sync and build)
 [![Supabase](https://img.shields.io/badge/Infra-Supabase-emerald?style=for-the-badge&logo=supabase)](https://supabase.com)
 
 ---
 
 ## 💎 Visión
+<<<<<<< HEAD
 **Aero IA Pro** es la plataforma de gestión aeroespacial de próxima generación. Diseñada para optimizar operaciones de aeropuertos, aerolíneas y empresas de aviación, combina IA avanzada para mejorar eficiencia operativa, seguridad y experiencia del pasajero.
 
 ## ✨ Características Clave
@@ -23,6 +32,23 @@
 - **Styling**: TailwindCSS con tema "Cyber-Aerospace"
 - **Backend**: Supabase (PostgreSQL + Auth + Edge Functions + Storage)
 - **AI**: Gemini 2.5 Flash (Multimodal)
+=======
+**IA.AGUS Aero** es la solución aeroespacial desarrollada específicamente para la industria de aviación. Potenciada por Gemini 2.0 Flash, ofrece gestión inteligente de operaciones, mantenimiento predictivo y optimización de recursos para empresas del sector aeroespacial.
+
+## ✨ Características Clave
+- **🛫 Gestión de Operaciones**: Dashboard integral para control de operaciones aéreas.
+- **🔧 Mantenimiento Predictivo**: Análisis de datos de vuelo para predicción de fallas.
+- **📊 Análisis de Flota**: Métricas de desempeño y utilización de aeronaves.
+- **👥 Soporte IA**: Asistente virtual para tripulación y personal de tierra.
+- **⚠️ Gestión de Incidencias**: Sistema de respuesta ante contingencias.
+- **📈 Reportes Operativos**: Generación automática de reportes regulatorios.
+
+## 🛠️ Tech Stack
+- **Frontend**: Next.js 16 + TypeScript
+- **Styling**: TailwindCSS con tema "Cyber-Aerospace"
+- **Backend**: Supabase (PostgreSQL + Auth + Edge Functions + Storage)
+- **AI**: Gemini 2.0 Flash (Multimodal)
+>>>>>>> 5acfb2a (AGUS PRO: Automated sync and build)
 - **Animaciones**: Framer Motion para micro-interacciones premium
 
 ## 🚀 Quick Start
@@ -45,19 +71,36 @@ npm run build
 
 ## 🔐 Seguridad & Enterprise
 - Arquitectura multi-tenant con RLS (Row Level Security)
+<<<<<<< HEAD
 - Cumplimiento de normativas aeronauticas y de seguridad
 - Protocolo de seguridad Neural Shield para protección de datos operativos
+=======
+- Cumplimiento de normativas aeronauticas internacionales
+- Protocolo de seguridad Neural Shield para protección de datos sensibles
+>>>>>>> 5acfb2a (AGUS PRO: Automated sync and build)
 
 ---
 
 ## 📈 Roadmap
+<<<<<<< HEAD
 - [ ] Integración con sistemas de control de tráfico aéreo
 - [ ] Optimización de rutas con IA
 - [x] Dashboard de operaciones
 - [x] Mantenimiento predictivo
 - [x] Gestión de pasajeros
+=======
+- [ ] Integración con sistemas de gestión de tráfico aéreo
+- [ ] Optimización de rutas con IA
+- [x] Dashboard de operaciones aéreas
+- [x] Mantenimiento predictivo
+- [x] Reportes regulatorios
+>>>>>>> 5acfb2a (AGUS PRO: Automated sync and build)
 
 ---
 
 Desarrollado con ❤️ por **[IA.AGUS](https://www.ia-agus.com)**
+<<<<<<< HEAD
 *Revolucionando la industria aeroespacial a través de Intelligent Automation.*
+=======
+*Excelencia aeroespacial thanks to Intelligent Automation.*
+>>>>>>> 5acfb2a (AGUS PRO: Automated sync and build)
