@@ -5,6 +5,7 @@ const Modality = { AUDIO: 'audio' as any };
 type LiveServerMessage = any;
 import { decode, decodeAudioData, createPCM16kBlob } from '../../utils/audioUtils';
 import { X, Mic, PhoneOff, Activity, ShieldAlert, Cpu } from 'lucide-react';
+import { getSecureKey } from '../../services/ai/geminiService';
 
 interface LiveVoiceCallProps {
     isOpen: boolean;
@@ -122,7 +123,7 @@ const LiveVoiceCall: React.FC<LiveVoiceCallProps> = ({ isOpen, onClose, systemIn
 
         try {
             setIsConnecting(true);
-            const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+            const apiKey = await getSecureKey('GEMINI_API_KEY');
             if (!apiKey) {
                 throw new Error("Missing Gemini API Key");
             }
@@ -144,11 +145,11 @@ const LiveVoiceCall: React.FC<LiveVoiceCallProps> = ({ isOpen, onClose, systemIn
             streamRef.current = await navigator.mediaDevices.getUserMedia({ audio: true });
 
             const sessionPromise = ai.live.connect({
-                model: 'gemini-2.5-flash-lite-native-audio-preview-12-2025',
+                model: 'models/gemini-2.5-flash-native-audio-preview-12-2025',
                 config: {
                     responseModalities: [Modality.AUDIO],
                     speechConfig: {
-                        voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Puck' } },
+                        voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Aoede' } },
                     },
                     systemInstruction: systemInstruction + `
                     

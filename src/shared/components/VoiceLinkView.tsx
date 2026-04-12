@@ -21,7 +21,7 @@ export const VoiceLinkView: React.FC<VoiceLinkViewProps> = ({
 }) => {
     // Aerospace specific instruction
     const systemInstruction = 'Eres AERO IA, una experta en protocolos de ingeniería aeroespacial, mantenimiento MRO y cumplimiento de la norma AS9100. Tu objetivo es asistir a los técnicos en el taller, resolver dudas sobre manuales y reportar no conformidades (NCR) de forma precisa y técnica.';
-    const agentVoice = 'Kore';
+    const agentVoice = 'Aoede';
     const agentName = 'AERO-01';
 
     const [isActive, setIsActive] = useState(false);
@@ -124,7 +124,7 @@ export const VoiceLinkView: React.FC<VoiceLinkViewProps> = ({
             streamRef.current = await navigator.mediaDevices.getUserMedia({ audio: true });
 
             const sessionPromise = ai.live.connect({
-                model: 'gemini-2.5-flash-lite-native-audio-preview-12-2025',
+                model: 'models/gemini-2.5-flash-native-audio-preview-12-2025',
                 config: {
                     responseModalities: [Modality.AUDIO],
                     speechConfig: {

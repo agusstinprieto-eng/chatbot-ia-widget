@@ -4,6 +4,7 @@ import { GoogleGenAI, Modality, LiveServerMessage } from '@google/genai';
 import { decode, decodeAudioData, createBlob } from '../utils/audioUtils';
 import { Mic, PhoneOff, PhoneCall, Plane, FileText, Trash2, Check, Copy, Radio, Navigation, Wind, MapPin, Gauge } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { getSecureKey } from '../services/ai/geminiService';
 
 interface TranscriptionHistory {
     role: 'user' | 'model';
@@ -20,7 +21,7 @@ export const VoiceLinkView: React.FC<VoiceLinkViewProps> = ({
 }) => {
     // Aero specific instruction
     const systemInstruction = 'Eres AERO-IA, una asistente avanzada de control de tráfico aéreo y gestión de flotas. Ayudas a los pilotos y despachadores a optimizar rutas, monitorear combustible y garantizar la seguridad operacional. Tu tono es profesional, calmado y extremadamente preciso. Utilizas fraseología técnica clara y estás entrenada para manejar situaciones de alta presión con eficiencia algorítmica.';
-    const agentVoice = 'Charon';
+    const agentVoice = 'Aoede';
     const agentName = 'ATC-G2';
 
     const [isActive, setIsActive] = useState(false);
@@ -137,9 +138,9 @@ export const VoiceLinkView: React.FC<VoiceLinkViewProps> = ({
         try {
             installWsPatch();
             setIsConnecting(true);
-            const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
+            const apiKey = await getSecureKey('GEMINI_API_KEY');
             if (!apiKey) {
-                alert('VITE_GEMINI_API_KEY no detectada.');
+                alert('GEMINI_API_KEY no detectada en Supabase.');
                 setIsConnecting(false);
                 removeWsPatch();
                 return;
@@ -161,7 +162,7 @@ export const VoiceLinkView: React.FC<VoiceLinkViewProps> = ({
             streamRef.current = await navigator.mediaDevices.getUserMedia({ audio: true });
 
             const sessionPromise = ai.live.connect({
-                model: 'gemini-2.5-flash-lite-native-audio-preview-12-2025',
+                model: 'models/gemini-2.5-flash-native-audio-preview-12-2025',
                 config: {
                     responseModalities: [Modality.AUDIO],
                     speechConfig: {
