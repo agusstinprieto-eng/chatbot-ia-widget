@@ -28,6 +28,7 @@ const App: React.FC = () => {
   const isWidgetMode = urlParams.get('widget') === 'true';
   const widgetTenant = urlParams.get('tenant') || 'ia-agus';
   const widgetAgent = urlParams.get('agent') || 'Valentina';
+  const shouldOpen = urlParams.get('open') === 'true';
 
   if (isWidgetMode) {
     return (
@@ -36,6 +37,7 @@ const App: React.FC = () => {
           tenantId={widgetTenant} 
           agentName={widgetAgent} 
           isWidget={true}
+          defaultOpen={shouldOpen}
         />
       </div>
     );

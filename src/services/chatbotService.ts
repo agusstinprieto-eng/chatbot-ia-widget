@@ -47,7 +47,13 @@ export const chatWithAi = async (
             throw error;
         }
 
-        return data;
+        // Normalize response (handle 'result' vs 'text' from different Edge Function versions)
+        const normalizedResult = data?.result || data?.text || '';
+        
+        return {
+            ...data,
+            result: normalizedResult
+        };
     } catch (error) {
         console.error(`[ChatbotService] Critical error in chatWithAi:`, error);
         throw error;

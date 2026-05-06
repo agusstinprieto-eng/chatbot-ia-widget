@@ -9,15 +9,17 @@ interface AgusProChatProps {
     agentName?: string;
     primaryColor?: string;
     isWidget?: boolean;
+    defaultOpen?: boolean;
 }
 
 const AgusProChat: React.FC<AgusProChatProps> = ({ 
     tenantId, 
     agentName = 'Valentina',
     primaryColor = '#0f172a',
-    isWidget = false
+    isWidget = false,
+    defaultOpen = false
 }) => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(defaultOpen);
     
     // Notify parent window of state changes (for iframes)
     useEffect(() => {
