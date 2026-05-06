@@ -11,6 +11,7 @@ import VirtualTrainer from './features/virtual-trainer/VirtualTrainer';
 import SettingsView from './features/settings/SettingsView';
 import { VoiceLinkView } from './shared/components/VoiceLinkView';
 import { ModuleType } from './types';
+import AgusProChat from './shared/components/AgusProChat';
 
 import { useAuth } from './contexts/AuthContext';
 import { useLanguage } from './contexts/LanguageContext';
@@ -22,6 +23,22 @@ const App: React.FC = () => {
   const { language } = useLanguage();
   const [activeModule, setActiveModule] = useState<ModuleType>(ModuleType.DASHBOARD);
   const [criticalAlert, setCriticalAlert] = useState(false);
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const isWidgetMode = urlParams.get('widget') === 'true';
+  const widgetTenant = urlParams.get('tenant') || 'ia-agus';
+  const widgetAgent = urlParams.get('agent') || 'Valentina';
+
+  if (isWidgetMode) {
+    return (
+      <div className="bg-transparent h-screen w-screen overflow-hidden">
+        <AgusProChat 
+          tenantId={widgetTenant} 
+          agentName={widgetAgent} 
+        />
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return <LoginView />;
@@ -67,6 +84,7 @@ const App: React.FC = () => {
       >
         {renderModule()}
       </Layout>
+      <AgusProChat tenantId="ia-agus" agentName="Valentina" />
     </CostsProvider>
   );
 };
