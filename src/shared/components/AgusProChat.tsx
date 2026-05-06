@@ -8,19 +8,24 @@ interface AgusProChatProps {
     tenantId: string;
     agentName?: string;
     primaryColor?: string;
+    isWidget?: boolean;
 }
 
 const AgusProChat: React.FC<AgusProChatProps> = ({ 
     tenantId, 
     agentName = 'Valentina',
-    primaryColor = '#0f172a' 
+    primaryColor = '#0f172a',
+    isWidget = false
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     
     // Notify parent window of state changes (for iframes)
     useEffect(() => {
-        window.parent.postMessage({ type: 'CHAT_STATE', isOpen }, '*');
-    }, [isOpen]);
+        if (isWidget) {
+            const message = isOpen ? 'agus-chat-open' : 'agus-chat-close';
+            window.parent.postMessage(message, '*');
+        }
+    }, [isOpen, isWidget]);
     const [isMaximized, setIsMaximized] = useState(false);
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [input, setInput] = useState('');
@@ -88,7 +93,7 @@ const AgusProChat: React.FC<AgusProChatProps> = ({
     };
 
     return (
-        <div className="fixed bottom-6 right-6 z-[9999] font-sans">
+        <div className={`${isWidget ? 'relative h-screen w-screen flex flex-col items-end justify-end p-4' : 'fixed bottom-6 right-6 z-[9999]'} font-sans`}>
             {/* Chat Trigger Button */}
             <AnimatePresence mode="wait">
                 {!isOpen && (
@@ -117,8 +122,8 @@ const AgusProChat: React.FC<AgusProChatProps> = ({
                         exit={{ y: 100, opacity: 0, scale: 0.9 }}
                         className={`${
                             isMaximized 
-                            ? 'fixed inset-4 md:inset-10' 
-                            : 'w-[90vw] md:w-[420px] h-[600px]'
+                            ? (isWidget ? 'fixed inset-0 z-50' : 'fixed inset-4 md:inset-10')
+                            : (isWidget ? 'w-full h-full' : 'w-[90vw] md:w-[420px] h-[600px]')
                         } bg-slate-950/90 backdrop-blur-xl border border-slate-800 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden`}
                     >
                         {/* Header */}

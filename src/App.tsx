@@ -35,6 +35,7 @@ const App: React.FC = () => {
         <AgusProChat 
           tenantId={widgetTenant} 
           agentName={widgetAgent} 
+          isWidget={true}
         />
       </div>
     );
