@@ -113,7 +113,7 @@ const AgusProChat: React.FC<AgusProChatProps> = ({
 
         // Handle Bold/Strong (support both ** and *)
         text = text.replace(/\*\*([^*]+)\*\*/g, '%%BOLD_S%%$1%%BOLD_E%%');
-        text = text.replace(/\*([^*]+)\*/g, '%%BOLD_S%%$1%%BOLD_E%%');
+        text = text.replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '%%BOLD_S%%$1%%BOLD_E%%');
 
         // Handle Inline Code
         text = text.replace(/`([^`]+)`/g, '%%CODE_S%%$1%%CODE_E%%');
@@ -416,12 +416,12 @@ const AgusProChat: React.FC<AgusProChatProps> = ({
                                             <Bot size={14} className="text-blue-400" />
                                         </div>
                                     )}
-                                    <div className={`max-w-[85%] rounded-2xl p-4 shadow-2xl transition-all hover:shadow-blue-500/5 ${
+                                    <div className={`max-w-[85%] rounded-2xl p-5 shadow-2xl transition-all hover:shadow-blue-500/5 ${
                                         msg.role === 'user'
                                         ? 'bg-gradient-to-br from-blue-600 to-indigo-700 text-white rounded-tr-none shadow-blue-600/20 border border-blue-500/30'
                                         : 'bg-slate-900/70 backdrop-blur-xl text-slate-200 border border-slate-800/50 rounded-tl-none ring-1 ring-white/5'
                                     }`}>
-                                        <div className="space-y-1">
+                                        <div className="space-y-3 leading-relaxed text-[14px]">
                                             {formatMessage(msg.content)}
                                         </div>
                                     </div>
