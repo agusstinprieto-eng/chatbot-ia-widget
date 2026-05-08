@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Bot, User, Sparkles, Loader2, Maximize2, Minimize2, Trash2 } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, User, Sparkles, Loader2, Maximize2, Minimize2, Trash2, ExternalLink, Copy, Check } from 'lucide-react';
 import { chatWithAi, ChatMessage } from '../../services/chatbotService';
 
 interface AgusProChatProps {
@@ -95,18 +94,63 @@ const AgusProChat: React.FC<AgusProChatProps> = ({
     };
 
     const processInline = (lineText: string) => {
-        const linkified = lineText.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '%%LINK_S%%$1%%LINK_M%%$2%%LINK_E%%');
-        const parts = linkified.split(/(%%LINK_S%%[^%]+%%LINK_M%%[^%]+%%LINK_E%%|`[^`]+`|\*\*[^*]+\*\*)/g);
+        // Linkify URLs that are not already in markdown format
+        let text = lineText;
+        
+        // Handle markdown links first: [text](url)
+        text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '%%LINK_S%%$1%%LINK_M%%$2%%LINK_E%%');
+        
+        // Handle plain URLs: https://...
+        text = text.replace(/(?<!\()https?:\/\/[^\s)]+/g, (url) => {
+            return `%%URL_S%%${url}%%URL_E%%`;
+        });
+
+        // Handle Pricing: $1,000 MXN or similar
+        text = text.replace(/(\$\d{1,3}(?:,\d{3})*(?:\.\d+)?(?:\s*MXN)?\s*\*?)/g, '%%PRICE_S%%$1%%PRICE_E%%');
+
+        // Handle Citations: [1], [2]
+        text = text.replace(/\[(\d+)\]/g, '%%CITE_S%%$1%%CITE_E%%');
+
+        // Handle Bold/Strong (support both ** and *)
+        text = text.replace(/\*\*([^*]+)\*\*/g, '%%BOLD_S%%$1%%BOLD_E%%');
+        text = text.replace(/\*([^*]+)\*/g, '%%BOLD_S%%$1%%BOLD_E%%');
+
+        // Handle Inline Code
+        text = text.replace(/`([^`]+)`/g, '%%CODE_S%%$1%%CODE_E%%');
+
+        const parts = text.split(/(%%LINK_S%%.*?%%LINK_E%%|%%URL_S%%.*?%%URL_E%%|%%PRICE_S%%.*?%%PRICE_E%%|%%CITE_S%%.*?%%CITE_E%%|%%BOLD_S%%.*?%%BOLD_E%%|%%CODE_S%%.*?%%CODE_E%%)/g);
+        
         return parts.map((part, idx) => {
             if (part.startsWith('%%LINK_S%%')) {
-                const m = part.match(/%%LINK_S%%(.+)%%LINK_M%%(.+)%%LINK_E%%/);
-                if (m) return <a key={idx} href={m[2]} target="_blank" rel="noopener noreferrer" className="text-blue-400 underline hover:text-blue-300 transition-colors">{m[1]}</a>;
+                const m = part.match(/%%LINK_S%%(.*?)%%LINK_M%%(.*?)%%LINK_E%%/);
+                if (m) return (
+                    <a key={idx} href={m[2]} target="_blank" rel="noopener noreferrer" 
+                       className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-500/10 border border-blue-500/30 rounded-md text-blue-400 font-medium hover:bg-blue-500/20 transition-all no-underline">
+                        {m[1]} <ExternalLink size={10} />
+                    </a>
+                );
             }
-            if (part.startsWith('`') && part.endsWith('`')) {
-                return <code key={idx} className="bg-slate-800/80 px-1.5 py-0.5 rounded text-cyan-400 font-mono text-xs">{part.slice(1, -1)}</code>;
+            if (part.startsWith('%%URL_S%%')) {
+                const url = part.slice(9, -9);
+                const displayUrl = url.length > 30 ? url.substring(0, 27) + '...' : url;
+                return (
+                    <a key={idx} href={url} target="_blank" rel="noopener noreferrer" 
+                       className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-700/30 border border-slate-600/30 rounded-md text-cyan-400 font-medium hover:bg-slate-700/50 transition-all no-underline">
+                        {displayUrl} <ExternalLink size={10} />
+                    </a>
+                );
             }
-            if (part.startsWith('**') && part.endsWith('**')) {
-                return <strong key={idx} className="text-blue-400 font-bold">{part.slice(2, -2)}</strong>;
+            if (part.startsWith('%%PRICE_S%%')) {
+                return <span key={idx} className="inline-block px-1.5 py-0.5 bg-emerald-500/10 text-emerald-400 font-bold rounded border border-emerald-500/20">{part.slice(10, -10)}</span>;
+            }
+            if (part.startsWith('%%CITE_S%%')) {
+                return <span key={idx} className="inline-flex items-center justify-center w-4 h-4 text-[9px] bg-blue-600 text-white rounded-full font-bold align-top ml-0.5">{part.slice(9, -9)}</span>;
+            }
+            if (part.startsWith('%%BOLD_S%%')) {
+                return <strong key={idx} className="text-white font-bold tracking-tight">{part.slice(9, -9)}</strong>;
+            }
+            if (part.startsWith('%%CODE_S%%')) {
+                return <code key={idx} className="bg-slate-800 px-1.5 py-0.5 rounded text-pink-400 font-mono text-[11px] border border-slate-700">{part.slice(9, -9)}</code>;
             }
             return part;
         });
@@ -158,10 +202,21 @@ const AgusProChat: React.FC<AgusProChatProps> = ({
             if (line.trim().startsWith('```')) {
                 if (inCodeBlock) {
                     elements.push(
-                        <pre key={`code-${elements.length}`} className="bg-slate-900/80 p-4 rounded-xl my-2 overflow-x-auto border border-slate-700/50">
-                            {codeLang && <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-2">{codeLang}</div>}
-                            <code className="text-slate-200 font-mono text-xs leading-relaxed block whitespace-pre">{codeContent}</code>
-                        </pre>
+                        <div key={`code-${elements.length}`} className="relative group my-3">
+                            <pre className="bg-slate-900/90 p-4 rounded-xl overflow-x-auto border border-slate-800 shadow-inner">
+                                {codeLang && <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2 flex items-center justify-between">
+                                    <span>{codeLang}</span>
+                                </div>}
+                                <code className="text-slate-300 font-mono text-xs leading-relaxed block whitespace-pre">{codeContent}</code>
+                            </pre>
+                            <button 
+                                onClick={() => navigator.clipboard.writeText(codeContent)}
+                                className="absolute top-3 right-3 p-1.5 bg-slate-800/50 hover:bg-slate-700 text-slate-400 hover:text-white rounded-lg opacity-0 group-hover:opacity-100 transition-all border border-slate-700"
+                                title="Copiar código"
+                            >
+                                <Copy size={12} />
+                            </button>
+                        </div>
                     );
                     codeContent = '';
                     codeLang = '';
@@ -240,7 +295,7 @@ const AgusProChat: React.FC<AgusProChatProps> = ({
                 continue;
             }
 
-            elements.push(<div key={`p-${elements.length}`} className="mb-1 text-xs">{processInline(line)}</div>);
+            elements.push(<div key={`p-${elements.length}`} className="mb-3 text-[13px] last:mb-0 leading-relaxed text-slate-300">{processInline(line)}</div>);
         }
 
         if (inCodeBlock) {
@@ -350,28 +405,29 @@ const AgusProChat: React.FC<AgusProChatProps> = ({
 
                             {messages.map((msg, i) => (
                                 <motion.div
-                                    initial={{ opacity: 0, x: msg.role === 'user' ? 20 : -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
+                                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    transition={{ duration: 0.3, delay: i * 0.05 }}
                                     key={i}
                                     className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} items-start gap-3`}
                                 >
                                     {msg.role === 'model' && (
-                                        <div className="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center shrink-0 border border-slate-700">
+                                        <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center shrink-0 border border-slate-800 shadow-lg shadow-blue-500/10">
                                             <Bot size={14} className="text-blue-400" />
                                         </div>
                                     )}
-                                    <div className={`max-w-[85%] rounded-2xl p-4 text-sm leading-relaxed ${
+                                    <div className={`max-w-[85%] rounded-2xl p-4 shadow-2xl transition-all hover:shadow-blue-500/5 ${
                                         msg.role === 'user'
-                                        ? 'bg-blue-600 text-white rounded-tr-none shadow-lg shadow-blue-600/10'
-                                        : 'bg-slate-800/50 text-slate-200 border border-slate-700/50 rounded-tl-none'
+                                        ? 'bg-gradient-to-br from-blue-600 to-indigo-700 text-white rounded-tr-none shadow-blue-600/20 border border-blue-500/30'
+                                        : 'bg-slate-900/70 backdrop-blur-xl text-slate-200 border border-slate-800/50 rounded-tl-none ring-1 ring-white/5'
                                     }`}>
-                                        <div className="text-xs leading-relaxed">
+                                        <div className="space-y-1">
                                             {formatMessage(msg.content)}
                                         </div>
                                     </div>
                                     {msg.role === 'user' && (
-                                        <div className="w-8 h-8 rounded-lg bg-slate-700 flex items-center justify-center shrink-0 border border-slate-600">
-                                            <User size={14} className="text-slate-300" />
+                                        <div className="w-8 h-8 rounded-lg bg-blue-900/30 flex items-center justify-center shrink-0 border border-blue-500/20">
+                                            <User size={14} className="text-blue-200" />
                                         </div>
                                     )}
                                 </motion.div>
@@ -379,12 +435,14 @@ const AgusProChat: React.FC<AgusProChatProps> = ({
 
                             {isLoading && (
                                 <div className="flex justify-start items-start gap-3">
-                                    <div className="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center shrink-0 border border-slate-700">
+                                    <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center shrink-0 border border-slate-800 shadow-lg shadow-blue-500/10">
                                         <Bot size={14} className="text-blue-400" />
                                     </div>
-                                    <div className="bg-slate-800/50 text-slate-400 border border-slate-700/50 rounded-2xl rounded-tl-none p-4 flex items-center gap-2">
-                                        <Loader2 size={16} className="animate-spin" />
-                                        <span className="text-xs font-bold uppercase tracking-widest italic">{agentName} está escribiendo...</span>
+                                    <div className="bg-slate-900/50 backdrop-blur-md text-slate-400 border border-slate-800/50 rounded-2xl rounded-tl-none p-4 flex items-center gap-3">
+                                        <Loader2 size={16} className="animate-spin text-blue-500" />
+                                        <span className="text-[10px] font-bold uppercase tracking-widest italic text-blue-400/70">
+                                            {agentName} está procesando...
+                                        </span>
                                     </div>
                                 </div>
                             )}
