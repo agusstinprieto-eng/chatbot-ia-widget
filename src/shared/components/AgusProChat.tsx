@@ -94,6 +94,168 @@ const AgusProChat: React.FC<AgusProChatProps> = ({
         }
     };
 
+    const processInline = (lineText: string) => {
+        const linkified = lineText.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '%%LINK_S%%$1%%LINK_M%%$2%%LINK_E%%');
+        const parts = linkified.split(/(%%LINK_S%%[^%]+%%LINK_M%%[^%]+%%LINK_E%%|`[^`]+`|\*\*[^*]+\*\*)/g);
+        return parts.map((part, idx) => {
+            if (part.startsWith('%%LINK_S%%')) {
+                const m = part.match(/%%LINK_S%%(.+)%%LINK_M%%(.+)%%LINK_E%%/);
+                if (m) return <a key={idx} href={m[2]} target="_blank" rel="noopener noreferrer" className="text-blue-400 underline hover:text-blue-300 transition-colors">{m[1]}</a>;
+            }
+            if (part.startsWith('`') && part.endsWith('`')) {
+                return <code key={idx} className="bg-slate-800/80 px-1.5 py-0.5 rounded text-cyan-400 font-mono text-xs">{part.slice(1, -1)}</code>;
+            }
+            if (part.startsWith('**') && part.endsWith('**')) {
+                return <strong key={idx} className="text-blue-400 font-bold">{part.slice(2, -2)}</strong>;
+            }
+            return part;
+        });
+    };
+
+    const formatMessage = (text: string) => {
+        if (!text) return null;
+        const lines = text.split('\n');
+        const elements: React.ReactNode[] = [];
+        let inCodeBlock = false;
+        let codeContent = '';
+        let codeLang = '';
+        let inTable = false;
+        let tableHeaders: string[] = [];
+        let tableRows: string[][] = [];
+
+        const flushTable = () => {
+            if (tableHeaders.length === 0) return;
+            elements.push(
+                <div key={`tbl-${elements.length}`} className="overflow-x-auto my-3 rounded-xl border border-slate-700/50">
+                    <table className="w-full text-xs">
+                        <thead>
+                            <tr className="bg-slate-800/80">
+                                {tableHeaders.map((h, hi) => (
+                                    <th key={hi} className="px-4 py-2.5 text-left font-bold text-blue-300 uppercase tracking-wider whitespace-nowrap">{h.trim()}</th>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {tableRows.map((row, ri) => (
+                                <tr key={ri} className={ri % 2 === 0 ? 'bg-slate-900/40' : 'bg-slate-900/20'}>
+                                    {row.map((cell, ci) => (
+                                        <td key={ci} className="px-4 py-2 text-slate-300 border-t border-slate-800/50">{cell.trim()}</td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            );
+            tableHeaders = [];
+            tableRows = [];
+            inTable = false;
+        };
+
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+
+            if (line.trim().startsWith('```')) {
+                if (inCodeBlock) {
+                    elements.push(
+                        <pre key={`code-${elements.length}`} className="bg-slate-900/80 p-4 rounded-xl my-2 overflow-x-auto border border-slate-700/50">
+                            {codeLang && <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-2">{codeLang}</div>}
+                            <code className="text-slate-200 font-mono text-xs leading-relaxed block whitespace-pre">{codeContent}</code>
+                        </pre>
+                    );
+                    codeContent = '';
+                    codeLang = '';
+                    inCodeBlock = false;
+                } else {
+                    inCodeBlock = true;
+                    codeLang = line.trim().slice(3).trim();
+                }
+                continue;
+            }
+
+            if (inCodeBlock) {
+                codeContent += (codeContent ? '\n' : '') + line;
+                continue;
+            }
+
+            if (line.trim().startsWith('|') && line.trim().endsWith('|')) {
+                const cells = line.split('|').filter((_, idx, arr) => idx > 0 && idx < arr.length - 1);
+                if (cells.every(c => /^[\s:-]+$/.test(c.trim()))) continue;
+                if (!inTable) { inTable = true; tableHeaders = cells; tableRows = []; }
+                else { tableRows.push(cells); }
+                continue;
+            } else if (inTable) flushTable();
+
+            if (/^[-*_]{3,}$/.test(line.trim())) {
+                elements.push(<hr key={`hr-${elements.length}`} className="my-4 border-slate-700/50" />);
+                continue;
+            }
+
+            if (line.trim().startsWith('> ')) {
+                elements.push(
+                    <div key={`qt-${elements.length}`} className="border-l-2 border-blue-500/50 pl-4 my-2 italic text-slate-400 text-xs">
+                        {processInline(line.trim().substring(2))}
+                    </div>
+                );
+                continue;
+            }
+
+            const numMatch = line.trim().match(/^(\d+)\.\s+(.*)/);
+            if (numMatch) {
+                elements.push(
+                    <div key={`nl-${elements.length}`} className="flex gap-2 ml-3 mb-1">
+                        <span className="text-blue-400 font-bold shrink-0 text-xs">{numMatch[1]}.</span>
+                        <span className="text-xs">{processInline(numMatch[2])}</span>
+                    </div>
+                );
+                continue;
+            }
+
+            if (line.trim().startsWith('- ') || line.trim().startsWith('* ')) {
+                const indent = line.search(/\S/);
+                elements.push(
+                    <div key={`ul-${elements.length}`} className="flex gap-2 ml-3 mb-1" style={{ paddingLeft: indent > 0 ? `${indent * 8}px` : undefined }}>
+                        <span className="text-blue-400 mt-0.5 shrink-0">•</span>
+                        <span className="text-xs">{processInline(line.trim().substring(2))}</span>
+                    </div>
+                );
+                continue;
+            }
+
+            if (line.trim().startsWith('### ')) {
+                elements.push(<h4 key={`h4-${elements.length}`} className="text-sm font-bold text-cyan-400 mt-2 mb-1">{processInline(line.trim().substring(4))}</h4>);
+                continue;
+            }
+            if (line.trim().startsWith('## ')) {
+                elements.push(<h3 key={`h3-${elements.length}`} className="text-base font-bold text-blue-400 mt-2 mb-1">{processInline(line.trim().substring(3))}</h3>);
+                continue;
+            }
+            if (line.trim().startsWith('# ')) {
+                elements.push(<h2 key={`h2-${elements.length}`} className="text-lg font-bold text-white mt-3 mb-2">{processInline(line.trim().substring(2))}</h2>);
+                continue;
+            }
+
+            if (!line.trim()) {
+                elements.push(<div key={`sp-${elements.length}`} className="h-2" />);
+                continue;
+            }
+
+            elements.push(<div key={`p-${elements.length}`} className="mb-1 text-xs">{processInline(line)}</div>);
+        }
+
+        if (inCodeBlock) {
+            elements.push(
+                <pre key={`code-${elements.length}`} className="bg-slate-900/80 p-4 rounded-xl my-2 overflow-x-auto border border-slate-700/50">
+                    {codeLang && <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-2">{codeLang}</div>}
+                    <code className="text-slate-200 font-mono text-xs leading-relaxed block whitespace-pre">{codeContent}</code>
+                </pre>
+            );
+        }
+
+        if (inTable) flushTable();
+        return elements;
+    };
+
     return (
         <div className={`${isWidget ? 'relative h-screen w-screen flex flex-col items-end justify-end p-4' : 'fixed bottom-6 right-6 z-[9999]'} font-sans`}>
             {/* Chat Trigger Button */}
@@ -203,7 +365,9 @@ const AgusProChat: React.FC<AgusProChatProps> = ({
                                         ? 'bg-blue-600 text-white rounded-tr-none shadow-lg shadow-blue-600/10'
                                         : 'bg-slate-800/50 text-slate-200 border border-slate-700/50 rounded-tl-none'
                                     }`}>
-                                        {msg.content}
+                                        <div className="text-xs leading-relaxed">
+                                            {formatMessage(msg.content)}
+                                        </div>
                                     </div>
                                     {msg.role === 'user' && (
                                         <div className="w-8 h-8 rounded-lg bg-slate-700 flex items-center justify-center shrink-0 border border-slate-600">
